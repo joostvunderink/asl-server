@@ -37,3 +37,25 @@ describe('GET countries', () => {
   });
 
 });
+
+describe('GET country', () => {
+  it('responds with country object', () => {
+    return chai.request(app).get('/countries/1')
+      .then(res => {
+        expect(res.status).to.equal(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.an('object');
+        let nl = res.body;
+        expect(nl).to.have.all.keys([
+          'id',
+          'name',
+          'code',
+          'created_at',
+          'created_by',
+          'updated_at',
+          'deleted_at',
+        ]);
+        expect(nl.name).to.equal('The Netherlands');
+      });
+  });
+});

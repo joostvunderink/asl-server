@@ -9,6 +9,10 @@ export class CountryController {
     return Country.fetchAll();
   }
 
+  public getOne(id) {
+    return Country.where('id', id).fetch();
+  }
+
 }
 
 const countryController = new CountryController();

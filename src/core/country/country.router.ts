@@ -16,8 +16,16 @@ export class CountryRouter {
     });
   }
 
+  public getOne(req: Request, res: Response, next: NextFunction) {
+    countryController.getOne(req.params.id)
+    .then((ret) => {
+      res.status(200).send(ret);
+    });
+  }
+
   init() {
     this.router.get('/', this.getAll);
+    this.router.get('/:id', this.getOne);
   }
 
 }
