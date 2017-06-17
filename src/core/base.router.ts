@@ -45,8 +45,12 @@ export default class BaseRouter {
           code: err.code,
           message: err.message,
         });
-      }
-      else {
+      } else if (err.name === 'ValidationError') {
+        res.status(400).send({
+          code: err.name,
+          message: err.message,
+        });
+      } else {
         res.status(500).send(err);
       }
     });

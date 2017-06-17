@@ -105,8 +105,28 @@ describe('POST country', () => {
           'message',
           'code',
         ]);
-        expect(errObj.code).to.equal('ER_BAD_FIELD_ERROR');
+        expect(errObj.code).to.equal('ValidationError');
         expect(errObj.message).to.contain('local_name');
+      });
+  });
+
+  it('errors for invalid code', () => {
+    return chai.request(app).post('/countries')
+      .send({ code: 'GERM', name: 'Germany' })
+      .then(res => {
+        expect('we should not').to.equal('end up here');
+      })
+      .catch(err => {
+        expect(err.status).to.equal(400);
+        // TODO: Figure out if this is really the best way to get the error text.
+        const errObj = JSON.parse(err.response.error.text);
+        expect(errObj).to.have.all.keys([
+          'message',
+          'code',
+        ]);
+        expect(errObj.code).to.equal('ValidationError');
+        expect(errObj.message).to.contain('GERM');
+        expect(errObj.message).to.contain('code');
       });
   });
 });
@@ -156,7 +176,7 @@ describe('DELETE country', () => {
     let countryId;
     // Create a new country
     return chai.request(app).post('/countries')
-      .send({ code: 'tbd', name: 'To Be Deleted' })
+      .send({ code: 'zz', name: 'To Be Deleted' })
       .then(res => {
         expect(res.status).to.equal(201);
         expect(res).to.be.json;
