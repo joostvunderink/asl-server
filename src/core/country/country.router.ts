@@ -31,12 +31,19 @@ export class CountryRouter {
     });
   }
 
+  public update(req: Request, res: Response, next: NextFunction) {
+    countryController.update(req.params.id, req.body)
+    .then((updatedEntity) => {
+      res.status(200).send(updatedEntity);
+    });
+  }
+
   init() {
     this.router.get('/', this.getAll);
     this.router.get('/:id', this.getOne);
     this.router.post('/', this.create);
+    this.router.put('/:id', this.update);
   }
-
 }
 
 // Create the CountryRouter, and export its configured Express.Router
