@@ -23,9 +23,18 @@ export class CountryRouter {
     });
   }
 
+  public create(req: Request, res: Response, next: NextFunction) {
+    countryController.create(req.body)
+    .then((createdEntity) => {
+      // TODO: Add Location header. Figure out how to determine the base API URL here.
+      res.status(201).send(createdEntity);
+    });
+  }
+
   init() {
     this.router.get('/', this.getAll);
     this.router.get('/:id', this.getOne);
+    this.router.post('/', this.create);
   }
 
 }

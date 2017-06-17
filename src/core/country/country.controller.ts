@@ -13,6 +13,12 @@ export class CountryController {
     return Country.where('id', id).fetch();
   }
 
+  public create(data) {
+    return new Country(data).save()
+    .then((savedCountry) => {
+      return this.getOne(savedCountry.id);
+    });
+  }
 }
 
 const countryController = new CountryController();

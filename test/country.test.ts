@@ -59,3 +59,27 @@ describe('GET country', () => {
       });
   });
 });
+
+describe('POST country', () => {
+  it('responds with location of created country', () => {
+    return chai.request(app).post('/countries')
+      .send({ code: 'be', name: 'Belgium' })
+      .then(res => {
+        expect(res.status).to.equal(201);
+        expect(res).to.be.json;
+        expect(res.body).to.be.an('object');
+        let be = res.body;
+        expect(be).to.have.all.keys([
+          'id',
+          'name',
+          'code',
+          'created_at',
+          'created_by',
+          'updated_at',
+          'deleted_at',
+        ]);
+        expect(be.code).to.equal('be');
+        expect(be.name).to.equal('Belgium');
+      });
+  });
+});
