@@ -4,6 +4,7 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import CountryRouter from './core/country/country.router';
 import SportRouter from './core/sport/sport.router';
+import RegionRouter from './core/region/region.router';
 
 
 // Creates and configures an ExpressJS web server.
@@ -41,6 +42,7 @@ class App {
     this.express.use('/', router);
     this.express.use('/countries', CountryRouter);
     this.express.use('/sports', SportRouter);
+    this.express.use('/regions', RegionRouter);
   }
 
 }
