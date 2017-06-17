@@ -39,6 +39,17 @@ export class CountryRouter {
     .then((createdEntity) => {
       // TODO: Add Location header. Figure out how to determine the base API URL here.
       res.status(201).send(createdEntity);
+    })
+    .catch(err => {
+      if (err.code && err.code.startsWith('ER_')) {
+        res.status(400).send({
+          code: err.code,
+          message: err.message,
+        });
+      }
+      else {
+        res.status(500).send(err);
+      }
     });
   }
 
@@ -60,11 +71,30 @@ export class CountryRouter {
     });
   }
 
+  public deleteOne(req: Request, res: Response, next: NextFunction) {
+    countryController.delete(req.params.id)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(err => {
+      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
+        res.status(404).send();
+      }
+      else if (err.name.endsWith('NotFoundError')) {
+        res.status(404).send();
+      }
+      else {
+        res.status(500).send(err);
+      }
+    });
+  }
+
   init() {
     this.router.get('/', this.getAll);
     this.router.get('/:id', this.getOne);
     this.router.post('/', this.create);
     this.router.put('/:id', this.update);
+    this.router.delete('/:id', this.deleteOne);
   }
 }
 

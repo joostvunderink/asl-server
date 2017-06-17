@@ -90,6 +90,25 @@ describe('POST country', () => {
         expect(be.name).to.equal('Belgium');
       });
   });
+
+  it('handles invalid fields', () => {
+    return chai.request(app).post('/countries')
+      .send({ code: 'de', name: 'Germany', local_name: 'Deutschland' })
+      .then(res => {
+        expect('we should not').to.equal('end up here');
+      })
+      .catch(err => {
+        expect(err.status).to.equal(400);
+        // TODO: Figure out if this is really the best way to get the error text.
+        const errObj = JSON.parse(err.response.error.text);
+        expect(errObj).to.have.all.keys([
+          'message',
+          'code',
+        ]);
+        expect(errObj.code).to.equal('ER_BAD_FIELD_ERROR');
+        expect(errObj.message).to.contain('local_name');
+      });
+  });
 });
 
 describe('PUT country', () => {
@@ -132,3 +151,29 @@ describe('PUT country', () => {
   });
 });
 
+describe('DELETE country', () => {
+  it('deletes an existing country object', () => {
+    let countryId;
+    // Create a new country
+    return chai.request(app).post('/countries')
+      .send({ code: 'tbd', name: 'To Be Deleted' })
+      .then(res => {
+        expect(res.status).to.equal(201);
+        expect(res).to.be.json;
+        countryId = res.body.id;
+        // Delete the country
+        return chai.request(app).del('/countries/' + countryId);
+      })
+      .then(res => {
+        expect(res.status).to.equal(204);
+        // Re-fetch the country; should result in 404.
+        return chai.request(app).get('/countries/' + countryId);
+      })
+      .then(res => {
+        expect('we should not').to.equal('end up here');
+      })
+      .catch(err => {
+        expect(err.status).to.equal(404);
+      });
+  });
+});

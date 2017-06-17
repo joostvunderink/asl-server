@@ -6,11 +6,11 @@ export class CountryController {
   }
 
   public getAll() {
-    return Country.fetchAll();
+    return Country.where('deleted_at', null).fetchAll();
   }
 
   public getOne(id) {
-    return Country.where('id', id).fetch({ require: true });
+    return Country.where('id', id).where('deleted_at', null).fetch({ require: true });
   }
 
   public create(data) {
@@ -31,6 +31,17 @@ export class CountryController {
     })
     .then((savedCountry) => {
       return this.getOne(savedCountry.id);
+    });
+  }
+
+  public delete(id) {
+    return this.getOne(id)
+    .then((foundCountry) => {
+      foundCountry.set('deleted_at', new Date());
+      return foundCountry.save();
+    })
+    .then((savedCountry) => {
+      return;
     });
   }
 }
