@@ -57,7 +57,7 @@ describe('GET country', () => {
       });
   });
 
-  it('responds with 404 for not found', () => {
+  it('responds with 404 when the object does not exist', () => {
     return chai.request(app).get('/countries/999')
       .then(res => {
         expect('we should not').to.equal('end up here');
@@ -117,6 +117,17 @@ describe('PUT country', () => {
         const createdAt = (new Date(be.created_at)).getTime();
         const updatedAt = (new Date(be.updated_at)).getTime();
         expect(updatedAt).to.be.above(createdAt);
+      });
+  });
+
+  it('responds with 404 when the object does not exist', () => {
+    return chai.request(app).put('/countries/999')
+      .send({ name: 'Netherlands' })
+      .then(res => {
+        expect('we should not').to.equal('end up here');
+      })
+      .catch(err => {
+        expect(err.status).to.equal(404);
       });
   });
 });

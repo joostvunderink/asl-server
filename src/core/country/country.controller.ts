@@ -10,7 +10,7 @@ export class CountryController {
   }
 
   public getOne(id) {
-    return Country.where('id', id).fetch();
+    return Country.where('id', id).fetch({ require: true });
   }
 
   public create(data) {

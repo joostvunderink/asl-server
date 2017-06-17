@@ -18,12 +18,18 @@ export class CountryRouter {
 
   public getOne(req: Request, res: Response, next: NextFunction) {
     countryController.getOne(req.params.id)
-    .then((ret) => {
-      if (ret) {
-        res.status(200).send(ret);
+    .then(ret => {
+      res.status(200).send(ret);
+     })
+    .catch(err => {
+      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
+        res.status(404).send();
+      }
+      else if (err.name.endsWith('NotFoundError')) {
+        res.status(404).send();
       }
       else {
-        res.status(404).send();
+        res.status(500).send(err);
       }
     });
   }
@@ -40,6 +46,17 @@ export class CountryRouter {
     countryController.update(req.params.id, req.body)
     .then((updatedEntity) => {
       res.status(200).send(updatedEntity);
+    })
+    .catch(err => {
+      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
+        res.status(404).send();
+      }
+      else if (err.name.endsWith('NotFoundError')) {
+        res.status(404).send();
+      }
+      else {
+        res.status(500).send(err);
+      }
     });
   }
 
