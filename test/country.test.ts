@@ -8,7 +8,6 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 describe('GET countries', () => {
-
   it('responds with JSON array', () => {
     return chai.request(app).get('/countries')
       .then(res => {
@@ -35,7 +34,6 @@ describe('GET countries', () => {
         ]);
       });
   });
-
 });
 
 describe('GET country', () => {
@@ -56,6 +54,16 @@ describe('GET country', () => {
           'deleted_at',
         ]);
         expect(nl.name).to.equal('The Netherlands');
+      });
+  });
+
+  it('responds with 404 for not found', () => {
+    return chai.request(app).get('/countries/999')
+      .then(res => {
+        expect('we should not').to.equal('end up here');
+      })
+      .catch(err => {
+        expect(err.status).to.equal(404);
       });
   });
 });

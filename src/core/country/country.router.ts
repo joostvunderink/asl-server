@@ -19,7 +19,12 @@ export class CountryRouter {
   public getOne(req: Request, res: Response, next: NextFunction) {
     countryController.getOne(req.params.id)
     .then((ret) => {
-      res.status(200).send(ret);
+      if (ret) {
+        res.status(200).send(ret);
+      }
+      else {
+        res.status(404).send();
+      }
     });
   }
 
