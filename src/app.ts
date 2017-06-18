@@ -2,10 +2,10 @@ import * as path from 'path';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
-import CountryRouter from './core/country/country.router';
-import SportRouter   from './core/sport/sport.router';
-import RegionRouter  from './core/region/region.router';
-import ClubRouter    from './club/club/club.router';
+import CountryRouter from './api/country/country.router';
+import SportRouter   from './api/sport/sport.router';
+import RegionRouter  from './api/region/region.router';
+import ClubRouter    from './api/club/club.router';
 
 
 // Creates and configures an ExpressJS web server.

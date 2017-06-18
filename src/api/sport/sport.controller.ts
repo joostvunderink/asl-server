@@ -1,5 +1,5 @@
 import Sport from './sport.model';
-import BaseController from '../base.controller';
+import BaseController from '../../core/base.controller';
 
 export class SportController extends BaseController {
   constructor() {

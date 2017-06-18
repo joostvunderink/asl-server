@@ -1,5 +1,5 @@
 import Country from './country.model';
-import BaseController from '../base.controller';
+import BaseController from '../../core/base.controller';
 import CountryValidator from './country.validator'
 
 export class CountryController extends BaseController {

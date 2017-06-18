@@ -1,5 +1,5 @@
 import Region from './region.model';
-import BaseController from '../base.controller';
+import BaseController from '../../core/base.controller';
 
 export class RegionController extends BaseController {
   constructor() {

@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import countryController from './country.controller';
-import BaseRouter from '../base.router';
+import BaseRouter from '../../core/base.router';
 
 export class CountryRouter extends BaseRouter {
 }
