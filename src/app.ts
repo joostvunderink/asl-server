@@ -6,6 +6,7 @@ import CountryRouter from './api/country/country.router';
 import SportRouter   from './api/sport/sport.router';
 import RegionRouter  from './api/region/region.router';
 import ClubRouter    from './api/club/club.router';
+import SeasonRouter  from './api/season/season.router';
 
 
 // Creates and configures an ExpressJS web server.
@@ -28,23 +29,22 @@ class App {
     this.express.use(bodyParser.urlencoded({ extended: false }));
   }
 
+  public getRouteConfig() {
+    return {
+      'countries': CountryRouter,
+      'sports':    SportRouter,
+      'regions':   RegionRouter,
+      'clubs':     ClubRouter,
+      'seasons':   SeasonRouter,
+    };
+  }
+
   // Configure API endpoints.
   private routes(): void {
-    /* This is just to get up and running, and to make sure what we've got is
-     * working so far. This function will change when we start to add more
-     * API endpoints */
-    let router = express.Router();
-    // placeholder route handler
-    router.get('/', (req, res, next) => {
-      res.json({
-        message: 'Hello World!'
-      });
-    });
-    this.express.use('/', router);
-    this.express.use('/countries', CountryRouter);
-    this.express.use('/sports',    SportRouter);
-    this.express.use('/regions',   RegionRouter);
-    this.express.use('/clubs',     ClubRouter);
+    const routeConfig = this.getRouteConfig();
+    for (let m in routeConfig) {
+      this.express.use('/' + m, routeConfig[m]);
+    }
   }
 
 }
