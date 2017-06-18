@@ -14,7 +14,7 @@ describe('GET countries', () => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
         expect(res.body).to.be.an('array');
-        expect(res.body).to.have.length(1);
+        expect(res.body).to.have.length.above(0);
       });
   });
 

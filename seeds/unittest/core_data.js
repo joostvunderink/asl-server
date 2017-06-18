@@ -3,12 +3,14 @@ const data = [
     table: 'country',
     rows: [
       { id: 1, code: 'nl', name: 'The Netherlands'},
+      { id: 2, code: 'pl', name: 'Poland'},
     ]
   },
   {
     table: 'sport',
     rows: [
-      { id: 1, description: 'Football, not soccer', name: 'football' }
+      { id: 1, description: 'Football, not soccer', name: 'football' },
+      { id: 2, description: 'Basketball', name: 'basketball' },
     ]
   },
   {
