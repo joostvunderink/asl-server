@@ -22,6 +22,14 @@ const data = [
         { id: 4, country_id: 2, sport_id: 1, name: 'NW', description: 'North-West part of BE for football' },
     ]
   },
+  {
+    table: 'club',
+    rows: [
+        { id: 1, region_id: 1, name: 'Ajax', city: 'Amsterdam' },
+        { id: 2, region_id: 2, name: 'Feyenoord', city: 'Rotterdam' },
+        { id: 3, region_id: 2, name: 'Westlandia', city: 'Naaldwijk' },
+    ]
+  },
 ];
 
 exports.seed = function(knex, Promise) {
