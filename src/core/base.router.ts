@@ -9,7 +9,20 @@ export default class BaseRouter {
   }
 
   getAll(req: Request, res: Response, next: NextFunction) {
-    this.controller.getAll()
+    let filter;
+    if (req.query.filter) {
+      try {
+        filter = JSON.parse(req.query.filter);
+      }
+      catch (e) {
+        return res.status(400).send({
+          code: 'JsonParseError',
+          message: 'Error parsing "filter" parameter: ' + e,
+        });
+      }
+    }
+    
+    this.controller.getAll({ filter: filter })
     .then((ret) => {
       res.status(200).send(ret);
     });
