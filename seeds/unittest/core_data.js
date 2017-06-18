@@ -16,8 +16,10 @@ const data = [
   {
     table: 'region',
     rows: [
-        { id: 1, country_id: 1, sport_id: 1, name: 'West 1', description: 'North-West part of NL' },
-        { id: 2, country_id: 1, sport_id: 1, name: 'West 2', description: 'South-West part of NL' },
+        { id: 1, country_id: 1, sport_id: 1, name: 'West 1', description: 'North-West part of NL for football' },
+        { id: 2, country_id: 1, sport_id: 1, name: 'West 2', description: 'South-West part of NL for football' },
+        { id: 3, country_id: 1, sport_id: 2, name: 'East', description: 'East part of NL for basketball' },
+        { id: 4, country_id: 2, sport_id: 1, name: 'NW', description: 'North-West part of BE for football' },
     ]
   },
 ];
