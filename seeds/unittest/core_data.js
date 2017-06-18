@@ -39,6 +39,13 @@ const data = [
                  start_year: 2016, end_year: 2017, start_date: '2016-09-01', end_date: '2017-06-30' },
     ]
   },
+  {
+    table: 'competition',
+    rows: [
+        { id: 1, region_id: 1, season_id: 1, name: '4E', description: '', play_day: 6 },
+        { id: 2, region_id: 2, season_id: 2, name: '4E', description: '', play_day: 6 },
+    ]
+  },
 ];
 
 exports.seed = function(knex, Promise) {
