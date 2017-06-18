@@ -3,12 +3,13 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
-import CountryRouter     from './api/country/country.router';
-import SportRouter       from './api/sport/sport.router';
-import RegionRouter      from './api/region/region.router';
 import ClubRouter        from './api/club/club.router';
-import SeasonRouter      from './api/season/season.router';
 import CompetitionRouter from './api/competition/competition.router';
+import CountryRouter     from './api/country/country.router';
+import RegionRouter      from './api/region/region.router';
+import SeasonRouter      from './api/season/season.router';
+import SportRouter       from './api/sport/sport.router';
+import TeamRouter        from './api/team/team.router';
 
 
 // Creates and configures an ExpressJS web server.
@@ -33,12 +34,13 @@ class App {
 
   public getRouteConfig() {
     return {
-      'countries'   : CountryRouter,
-      'sports'      : SportRouter,
-      'regions'     : RegionRouter,
       'clubs'       : ClubRouter,
-      'seasons'     : SeasonRouter,
       'competitions': CompetitionRouter,
+      'countries'   : CountryRouter,
+      'regions'     : RegionRouter,
+      'seasons'     : SeasonRouter,
+      'sports'      : SportRouter,
+      'teams'       : TeamRouter,
     };
   }
 

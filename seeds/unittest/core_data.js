@@ -31,6 +31,13 @@ const data = [
     ]
   },
   {
+    table: 'team',
+    rows: [
+        { id: 1, club_id: 1, name: 'Ajax 1' },
+        { id: 2, club_id: 1, name: 'Ajax 2' },
+    ]
+  },
+  {
     table: 'season',
     rows: [
         { id: 1, region_id: 1, name: '2016-2017', description: '',
