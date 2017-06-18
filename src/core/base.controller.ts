@@ -1,3 +1,7 @@
+import FilterParser from './filter.parser';
+
+const fp = new FilterParser();
+
 export default class BaseController {
   model;
   validator;
@@ -8,14 +12,8 @@ export default class BaseController {
   public getAll(options) {
     let query = this.model.where('deleted_at', null);
 
-    if (options.filter && options.filter.where) {
-      const where = options.filter.where;
-      const key = Object.keys(where)[0];
-      const value = where[key];
-      query = query.where(key, value);
-    }
-    console.log(options.filter);
-
+    fp.apply(query, options.filter);
+    
     return query.fetchAll();
   }
 
