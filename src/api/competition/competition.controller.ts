@@ -8,5 +8,5 @@ export class CompetitionController extends BaseController {
   }
 }
 
-const clubController = new CompetitionController();
-export default clubController;
+const competitionController = new CompetitionController();
+export default competitionController;
