@@ -1,7 +1,7 @@
 import { knex, bookshelf } from '../../db';
 
-var Club = bookshelf.Model.extend({
-  tableName: 'club'
+var Person = bookshelf.Model.extend({
+  tableName: 'person'
 });
 
-export default Club;
+export default Person;
