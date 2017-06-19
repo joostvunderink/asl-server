@@ -3,14 +3,15 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
-import ClubRouter        from './api/club/club.router';
-import CompetitionRouter from './api/competition/competition.router';
-import CountryRouter     from './api/country/country.router';
-import PersonRouter      from './api/person/person.router';
-import RegionRouter      from './api/region/region.router';
-import SeasonRouter      from './api/season/season.router';
-import SportRouter       from './api/sport/sport.router';
-import TeamRouter        from './api/team/team.router';
+import ClubRouter                from './api/club/club.router';
+import CompetitionRouter         from './api/competition/competition.router';
+import CompetitionTemplateRouter from './api/competition-template/competition-template.router';
+import CountryRouter             from './api/country/country.router';
+import PersonRouter              from './api/person/person.router';
+import RegionRouter              from './api/region/region.router';
+import SeasonRouter              from './api/season/season.router';
+import SportRouter               from './api/sport/sport.router';
+import TeamRouter                from './api/team/team.router';
 
 
 // Creates and configures an ExpressJS web server.
@@ -35,14 +36,15 @@ class App {
 
   public getRouteConfig() {
     return {
-      'clubs'       : ClubRouter,
-      'competitions': CompetitionRouter,
-      'countries'   : CountryRouter,
-      'persons'     : PersonRouter,
-      'regions'     : RegionRouter,
-      'seasons'     : SeasonRouter,
-      'sports'      : SportRouter,
-      'teams'       : TeamRouter,
+      'clubs'                : ClubRouter,
+      'competitions'         : CompetitionRouter,
+      'competition-templates': CompetitionTemplateRouter,
+      'countries'            : CountryRouter,
+      'persons'              : PersonRouter,
+      'regions'              : RegionRouter,
+      'seasons'              : SeasonRouter,
+      'sports'               : SportRouter,
+      'teams'                : TeamRouter,
     };
   }
 
