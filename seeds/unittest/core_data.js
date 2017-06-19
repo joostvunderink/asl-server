@@ -69,6 +69,13 @@ const data = [
         { id: 2, competition_id: 2, team_id: 4 },
     ]
   },
+  {
+    table: 'person',
+    rows: [
+        { id: 1, full_name: 'Marco van Basten', first_name: 'Marco', last_name: 'van Basten',  },
+        { id: 2, full_name: 'Ruud Gullit', first_name: 'Ruud', last_name: 'Gullit',  },
+    ]
+  },
 ];
 
 exports.seed = function(knex, Promise) {
