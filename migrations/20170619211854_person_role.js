@@ -1,5 +1,5 @@
 exports.up = function(knex) {
-  return knex.schema.createTableIfNotExists('player_role', function (table) {
+  return knex.schema.createTableIfNotExists('person_role', function (table) {
     table.increments();
     table.string('name');
 
@@ -11,5 +11,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('player_role');
+  return knex.schema.dropTable('person_role');
 };
