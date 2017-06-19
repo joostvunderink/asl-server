@@ -25,9 +25,9 @@ const data = [
   {
     table: 'club',
     rows: [
-        { id: 1, region_id: 1, name: 'Ajax', city: 'Amsterdam' },
-        { id: 2, region_id: 2, name: 'Feyenoord', city: 'Rotterdam' },
-        { id: 3, region_id: 2, name: 'Westlandia', city: 'Naaldwijk' },
+        { id: 1, country_id: 1, name: 'Ajax', city: 'Amsterdam' },
+        { id: 2, country_id: 2, name: 'Feyenoord', city: 'Rotterdam' },
+        { id: 3, country_id: 2, name: 'Westlandia', city: 'Naaldwijk' },
     ]
   },
   {
@@ -35,22 +35,38 @@ const data = [
     rows: [
         { id: 1, club_id: 1, name: 'Ajax 1' },
         { id: 2, club_id: 1, name: 'Ajax 2' },
+        { id: 3, club_id: 2, name: 'Feyenoord 1' },
+        { id: 4, club_id: 3, name: 'Westlandia Prima' },
     ]
   },
   {
     table: 'season',
     rows: [
-        { id: 1, region_id: 1, name: '2016-2017', description: '',
+        { id: 1, region_id: 1, name: '2016-2017',
                  start_year: 2016, end_year: 2017, start_date: '2016-09-01', end_date: '2017-06-30' },
-        { id: 2, region_id: 2, name: '2016-2017', description: '',
+        { id: 2, region_id: 2, name: '2016-2017',
                  start_year: 2016, end_year: 2017, start_date: '2016-09-01', end_date: '2017-06-30' },
+    ]
+  },
+  {
+    table: 'competition_template',
+    rows: [
+        { id: 1, region_id: 1, name: '4E', description: '', play_day: 6 },
+        { id: 2, region_id: 2, name: '4E', description: '', play_day: 6 },
     ]
   },
   {
     table: 'competition',
     rows: [
-        { id: 1, region_id: 1, season_id: 1, name: '4E', description: '', play_day: 6 },
-        { id: 2, region_id: 2, season_id: 2, name: '4E', description: '', play_day: 6 },
+        { id: 1, competition_template_id: 2, season_id: 2 },
+        { id: 2, competition_template_id: 2, season_id: 2 },
+    ]
+  },
+  {
+    table: 'competition_team',
+    rows: [
+        { id: 1, competition_id: 2, team_id: 3 },
+        { id: 2, competition_id: 2, team_id: 4 },
     ]
   },
 ];

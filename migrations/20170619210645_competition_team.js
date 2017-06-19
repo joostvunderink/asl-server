@@ -1,12 +1,10 @@
 exports.up = function(knex) {
-  return knex.schema.createTableIfNotExists('club', function (table) {
+  return knex.schema.createTableIfNotExists('competition_team', function (table) {
     table.increments();
-    table.string('name');
-    table.string('description');
-    table.string('city');
 
-    table.integer('country_id').unsigned().references('id').inTable('country');
-    
+    table.integer('competition_id').unsigned().references('id').inTable('competition');
+    table.integer('team_id').unsigned().references('id').inTable('team');
+
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
@@ -15,5 +13,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('club');
+  return knex.schema.dropTable('competition_team');
 };
