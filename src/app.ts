@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
+import getRouteConfig from './routes';
 
 import ClubRouter                from './api/club/club.router';
 import CompetitionRouter         from './api/competition/competition.router';
@@ -34,23 +35,9 @@ class App {
     this.express.use(bodyParser.urlencoded({ extended: false }));
   }
 
-  public getRouteConfig() {
-    return {
-      'clubs'                : ClubRouter,
-      'competitions'         : CompetitionRouter,
-      'competition-templates': CompetitionTemplateRouter,
-      'countries'            : CountryRouter,
-      'persons'              : PersonRouter,
-      'regions'              : RegionRouter,
-      'seasons'              : SeasonRouter,
-      'sports'               : SportRouter,
-      'teams'                : TeamRouter,
-    };
-  }
-
   // Configure API endpoints.
   private routes(): void {
-    const routeConfig = this.getRouteConfig();
+    const routeConfig = getRouteConfig();
     for (let m in routeConfig) {
       this.express.use('/' + m, routeConfig[m]);
     }

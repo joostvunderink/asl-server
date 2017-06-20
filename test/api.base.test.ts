@@ -3,57 +3,22 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import app from '../src/app';
+import getRouteConfig from '../src/routes';
+
+const routeConfig = getRouteConfig();
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-const testData = [
-  {
-     modelName: 'countries',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'sports',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'regions',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'clubs',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'seasons',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'competition-templates',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'competitions',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'teams',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-  {
-     modelName: 'persons',
-     idPresent: 1,
-     idNotPresent: 999,
-  },
-];
+let testData = [];
+
+for (const key in routeConfig) {
+  testData.push({
+    modelName: key,
+    idPresent: 1,
+    idNotPresent: 999,
+  });
+};
 
 describe('GET /<model>', () => {
   testData.forEach(td => {
