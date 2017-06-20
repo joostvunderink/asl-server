@@ -1,7 +1,11 @@
 import { knex, bookshelf } from '../../db';
 
-var Club = bookshelf.Model.extend({
-  tableName: 'club'
+require('../team/team.model');
+var Club = bookshelf.model('Club', {
+  tableName: 'club',
+  teams: function() {
+    return this.hasMany('Team');
+  }
 });
 
 export default Club;

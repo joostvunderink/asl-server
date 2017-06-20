@@ -9,10 +9,12 @@ export default class FilterParser {
     }
 
     const where = filter.where;
-    Object.keys(where).forEach(key => {
-      const value = where[key];
-      query = query.where(key, value);
-    });
+    if (where) {
+      Object.keys(where).forEach(key => {
+        const value = where[key];
+        query = query.where(key, value);
+      });
+    }
 
     return query;
   }

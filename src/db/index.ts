@@ -12,3 +12,4 @@ else if (config.db.client === 'sqlite3') {
 
 export let knex: client = client(config.db);
 export let bookshelf = bs(knex);
+bookshelf.plugin('registry');

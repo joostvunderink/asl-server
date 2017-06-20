@@ -29,7 +29,7 @@ export default class BaseRouter {
   }
 
   public getOne(req: Request, res: Response, next: NextFunction) {
-    this.controller.getOne(req.params.id)
+    this.controller.getOne({ id: req.params.id })
     .then(ret => {
       res.status(200).send(ret);
      })
@@ -41,6 +41,7 @@ export default class BaseRouter {
         res.status(404).send();
       }
       else {
+        console.error(err);
         res.status(500).send(err);
       }
     });
@@ -82,6 +83,7 @@ export default class BaseRouter {
         res.status(404).send();
       }
       else {
+        console.error(err);
         res.status(500).send(err);
       }
     });

@@ -13,12 +13,31 @@ export default class BaseController {
     let query = this.model.where('deleted_at', null);
 
     fp.apply(query, options.filter);
-    
-    return query.fetchAll();
+
+    let fetchOptions = {
+      withRelated: []
+    };
+    if (options.filter && options.filter.include) {
+      fetchOptions.withRelated = options.filter.include;
+    }
+
+    return query.fetchAll(fetchOptions);
   }
 
-  public getOne(id) {
-    return this.model.where('id', id).where('deleted_at', null).fetch({ require: true });
+  public getOneFetchOptions() {
+    return {};
+  }
+
+  public getOne(options) {
+    const id = options.id;
+    let query = this.model.where('id', id).where('deleted_at', null);
+    let fetchOptions = { require: true };
+
+    const extraFetchOptions = this.getOneFetchOptions();
+    for (const key in extraFetchOptions) {
+      fetchOptions[key] = extraFetchOptions[key];
+    }
+    return query.fetch(fetchOptions);
   }
 
   public create(data) {
@@ -32,12 +51,12 @@ export default class BaseController {
     }
     return new this.model(data).save()
     .then((savedObj) => {
-      return this.getOne(savedObj.id);
+      return this.getOne({ id: savedObj.id });
     });
   }
 
   public update(id, data) {
-    return this.getOne(id)
+    return this.getOne({ id: id })
     .then((foundObj) => {
       for (const key in data) {
         foundObj.set(key, data[key]);
@@ -46,12 +65,12 @@ export default class BaseController {
       return foundObj.save();
     })
     .then((savedObj) => {
-      return this.getOne(savedObj.id);
+      return this.getOne({ id: savedObj.id });
     });
   }
 
   public delete(id) {
-    return this.getOne(id)
+    return this.getOne({ id: id })
     .then((foundObj) => {
       foundObj.set('deleted_at', new Date());
       return foundObj.save();
