@@ -25,11 +25,30 @@ export default class BaseRouter {
     this.controller.getAll({ filter: filter })
     .then((ret) => {
       res.status(200).send(ret);
-    });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send({
+        error: err.message ? err.message : err.toString()
+      });
+     });;
   }
 
   public getOne(req: Request, res: Response, next: NextFunction) {
-    this.controller.getOne({ id: req.params.id })
+    let filter;
+    if (req.query.filter) {
+      try {
+        filter = JSON.parse(req.query.filter);
+      }
+      catch (e) {
+        return res.status(400).send({
+          code: 'JsonParseError',
+          message: 'Error parsing "filter" parameter: ' + e,
+        });
+      }
+    }
+
+    this.controller.getOne({ id: req.params.id, filter: filter })
     .then(ret => {
       res.status(200).send(ret);
      })

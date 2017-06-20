@@ -24,19 +24,18 @@ export default class BaseController {
     return query.fetchAll(fetchOptions);
   }
 
-  public getOneFetchOptions() {
-    return {};
-  }
-
   public getOne(options) {
     const id = options.id;
     let query = this.model.where('id', id).where('deleted_at', null);
-    let fetchOptions = { require: true };
+    let fetchOptions = {
+      require: true,
+      withRelated: [],
+    };
 
-    const extraFetchOptions = this.getOneFetchOptions();
-    for (const key in extraFetchOptions) {
-      fetchOptions[key] = extraFetchOptions[key];
+    if (options.filter && options.filter.include) {
+      fetchOptions.withRelated = options.filter.include;
     }
+
     return query.fetch(fetchOptions);
   }
 
