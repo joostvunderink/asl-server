@@ -1,4 +1,5 @@
 import ClubRouter                from './api/club/club.router';
+import CompetitionRoundRouter    from './api/competition-round/competition-round.router';
 import CompetitionRouter         from './api/competition/competition.router';
 import CompetitionTeamRouter     from './api/competition-team/competition-team.router';
 import CompetitionTemplateRouter from './api/competition-template/competition-template.router';
