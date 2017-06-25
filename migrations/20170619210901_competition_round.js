@@ -4,6 +4,7 @@ exports.up = function(knex) {
 
     table.integer('competition_id').unsigned().references('id').inTable('competition');
     table.integer('round').unsigned();
+    table.date('round_date');
 
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());
