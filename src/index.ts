@@ -5,8 +5,6 @@ import app from './app';
 
 debug('ts-express:server');
 
-const db = require('./db');
-
 const port = normalizePort(process.env.PORT || 3000);
 app.set('port', port);
 

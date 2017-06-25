@@ -1,6 +1,4 @@
-import FilterParser from './filter.parser';
-
-const fp = new FilterParser();
+const whereFilter = require('knex-filter-loopback').whereFilter;
 
 export default class BaseController {
   model;
@@ -12,7 +10,9 @@ export default class BaseController {
   public getAll(options) {
     let query = this.model.where('deleted_at', null);
 
-    fp.apply(query, options.filter);
+    if (options.filter && options.filter.where) {
+      query.where(whereFilter(options.filter.where));
+    }
 
     let fetchOptions = {
       withRelated: []
