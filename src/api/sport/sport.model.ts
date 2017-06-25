@@ -1,6 +1,6 @@
 import { knex, bookshelf } from '../../db';
 
-var Sport = bookshelf.Model.extend({
+var Sport = bookshelf.model('Sport', {
   tableName: 'sport'
 });
 
