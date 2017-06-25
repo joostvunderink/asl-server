@@ -32,7 +32,6 @@ describe('GET regions', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
       });
   });
@@ -55,7 +54,6 @@ describe('GET region', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
         expect(obj.name).to.equal('West 1');
       });
@@ -90,7 +88,6 @@ describe('POST region', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
         expect(obj.name).to.equal('Zuid 1');
         expect(obj.description).to.equal('West South part of NL');
@@ -135,7 +132,6 @@ describe('PUT region', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
         expect(be.description).to.equal('new description');
         expect(be.name).to.equal('West 1');

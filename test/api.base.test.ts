@@ -35,6 +35,8 @@ describe('GET /<model>', () => {
               'created_at',
               'created_by',
               'updated_at',
+            ]);
+            expect(obj).to.not.include.all.keys([
               'deleted_at',
             ]);
           });
@@ -56,7 +58,6 @@ describe('GET /<model>/:id', () => {
             'created_at',
             'created_by',
             'updated_at',
-            'deleted_at',
           ]);
         });
     });

@@ -1,7 +1,8 @@
-import { knex, bookshelf } from '../../db';
+import { knex, bookshelf, defaultTableDef } from '../../db';
+import * as _ from 'lodash';
 
-var CompetitionMatch = bookshelf.Model.extend({
+var CompetitionMatch = bookshelf.model('CompetitionMatch', _.merge(defaultTableDef, {
   tableName: 'competition_match'
-});
+}));
 
 export default CompetitionMatch;

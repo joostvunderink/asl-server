@@ -30,7 +30,6 @@ describe('GET sports', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
       });
   });
@@ -51,7 +50,6 @@ describe('GET sport', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
         expect(obj.name).to.equal('football');
       });
@@ -84,7 +82,6 @@ describe('POST sport', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
         expect(obj.description).to.equal('Hockey on grass, not on ice');
         expect(obj.name).to.equal('hockey');
@@ -127,7 +124,6 @@ describe('PUT sport', () => {
           'created_at',
           'created_by',
           'updated_at',
-          'deleted_at',
         ]);
         expect(be.description).to.equal('new description');
         expect(be.name).to.equal('football');
