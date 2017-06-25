@@ -14,6 +14,16 @@ export default class BaseController {
       query.where(whereFilter(options.filter.where));
     }
 
+    if (options.filter && options.filter.order) {
+      const orderFilter = Array.isArray(options.filter.order) ? options.filter.order : [options.filter.order];
+      orderFilter.forEach(item => {
+        const arr = item.split(/ +/);
+        query.query(function(qb){
+          qb.orderBy(arr[0], arr[1]); 
+        });
+      });
+    }
+
     let fetchOptions = {
       withRelated: []
     };
