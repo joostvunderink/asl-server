@@ -24,6 +24,18 @@ export default class BaseController {
       });
     }
 
+    if (options.filter && options.filter.limit) {
+      query.query(function(qb) {
+        qb.limit(options.filter.limit);
+      });
+    }
+
+    if (options.filter && options.filter.skip) {
+      query.query(function(qb) {
+        qb.offset(options.filter.skip);
+      });
+    }
+
     let fetchOptions = {
       withRelated: []
     };
