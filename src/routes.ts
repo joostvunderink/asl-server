@@ -16,6 +16,7 @@ export default function getRouteConfig() {
     'clubs'                : ClubRouter,
     'competitions'         : CompetitionRouter,
     'competition-team'     : CompetitionTeamRouter,
+    'competition-rounds'   : CompetitionRoundRouter,
     'competition-templates': CompetitionTemplateRouter,
     'countries'            : CountryRouter,
     'persons'              : PersonRouter,

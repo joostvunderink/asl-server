@@ -70,6 +70,15 @@ const data = [
     ]
   },
   {
+    table: 'competition_round',
+    rows: [
+        { id: 1, competition_id: 2, round: 1 },
+        { id: 2, competition_id: 2, round: 2 },
+        { id: 3, competition_id: 2, round: 3 },
+        { id: 4, competition_id: 2, round: 4 },
+    ]
+  },
+  {
     table: 'person',
     rows: [
         { id: 1, full_name: 'Marco van Basten', first_name: 'Marco', last_name: 'van Basten',  },
