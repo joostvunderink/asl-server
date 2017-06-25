@@ -20,8 +20,8 @@ describe('Team/Club relationship', () => {
       const teams = club.related('teams').toJSON();
       expect(teams).to.be.an('array');
       expect(teams).to.have.length(2);
-      expect(teams[0].name).to.contain('Ajax');
-      expect(teams[1].name).to.contain('Ajax');
+      expect(teams[0].name).to.contain('SDZ');
+      expect(teams[1].name).to.contain('SDZ');
     });
   });
 

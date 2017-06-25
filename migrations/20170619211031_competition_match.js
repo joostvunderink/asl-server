@@ -3,8 +3,8 @@ exports.up = function(knex) {
     table.increments();
 
     table.integer('competition_round_id').unsigned().references('id').inTable('competition_round');
-    table.integer('home_team').unsigned().references('id').inTable('competition_team');
-    table.integer('away_team').unsigned().references('id').inTable('competition_team');
+    table.integer('home_team_id').unsigned().references('id').inTable('competition_team');
+    table.integer('away_team_id').unsigned().references('id').inTable('competition_team');
     table.integer('home_team_score').unsigned;
     table.integer('away_team_score').unsigned;
     table.timestamp('start_time').nullable();

@@ -18,7 +18,7 @@ describe('Filter: include', () => {
         expect(club.teams).to.be.an('array');
         expect(club.teams).to.have.length(2);
         club.teams.forEach(team => {
-          expect(team.name).to.contain('Ajax');
+          expect(team.name).to.contain('SDZ');
         });
       });
   });
@@ -30,7 +30,7 @@ describe('Filter: include', () => {
         const team = res.body;
         expect(team).to.be.an('object');
         expect(team.club).to.be.an('object');
-        expect(team.club.name).to.equal('Ajax');
+        expect(team.club.name).to.equal('SDZ');
       });
   });
   it('finds all clubs teams included', () => {

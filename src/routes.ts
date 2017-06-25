@@ -1,4 +1,5 @@
 import ClubRouter                from './api/club/club.router';
+import CompetitionMatchRouter    from './api/competition-match/competition-match.router';
 import CompetitionRoundRouter    from './api/competition-round/competition-round.router';
 import CompetitionRouter         from './api/competition/competition.router';
 import CompetitionTeamRouter     from './api/competition-team/competition-team.router';
@@ -15,7 +16,8 @@ export default function getRouteConfig() {
   return {
     'clubs'                : ClubRouter,
     'competitions'         : CompetitionRouter,
-    'competition-team'     : CompetitionTeamRouter,
+    'competition-matches'  : CompetitionMatchRouter,
+    'competition-team'     : CompetitionTeamRouter, // TODO: Many-to-many relationship: how to name the route?
     'competition-rounds'   : CompetitionRoundRouter,
     'competition-templates': CompetitionTemplateRouter,
     'countries'            : CountryRouter,
