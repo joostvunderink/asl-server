@@ -29,9 +29,17 @@ describe('GET /<model>', () => {
           expect(res).to.be.json;
           expect(res.body).to.be.an('array');
           expect(res.body).to.have.length.above(0);
+          res.body.forEach(obj => {
+            expect(obj).to.include.all.keys([
+              'id',
+              'created_at',
+              'created_by',
+              'updated_at',
+              'deleted_at',
+            ]);
+          });
         });
     });
-
   });
 });
 
@@ -43,6 +51,13 @@ describe('GET /<model>/:id', () => {
           expect(res.status).to.equal(200);
           expect(res).to.be.json;
           expect(res.body).to.be.an('object');
+          expect(res.body).to.include.all.keys([
+            'id',
+            'created_at',
+            'created_by',
+            'updated_at',
+            'deleted_at',
+          ]);
         });
     });
   });
@@ -74,3 +89,27 @@ describe('PUT /<model>/:id', () => {
     });
   });
 });
+
+describe('POST /<model>', () => {
+  testData.forEach(td => {
+    it('responds with 400 for invalid field on ' + td.modelName, () => {
+      return chai.request(app).post('/countries')
+        .send({ an_invalid_field_name: 'value' })
+        .then(res => {
+          expect('we should not').to.equal('end up here');
+        })
+        .catch(err => {
+          expect(err.status).to.equal(400);
+          // TODO: Figure out if this is really the best way to get the error text.
+          const errObj = JSON.parse(err.response.error.text);
+          expect(errObj).to.have.all.keys([
+            'message',
+            'code',
+          ]);
+          expect(errObj.code).to.equal('ValidationError');
+          expect(errObj.message).to.contain('an_invalid_field_name');
+        });
+    });
+  });
+});
+
