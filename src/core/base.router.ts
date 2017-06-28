@@ -126,6 +126,37 @@ export default class BaseRouter {
     });
   }
 
+  public getCount(req: Request, res: Response, next: NextFunction) {
+    let where;
+    if (req.query.where) {
+      try {
+        where = JSON.parse(req.query.where);
+      }
+      catch (e) {
+        return res.status(400).send({
+          code: 'JsonParseError',
+          message: 'Error parsing "where" parameter: ' + e,
+        });
+      }
+    }
+
+    this.controller.count({ where: where })
+    .then((numRows) => {
+      res.status(200).send({ count: numRows });
+    })
+    .catch(err => {
+      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
+        res.status(404).send();
+      }
+      else if (err.name.endsWith('NotFoundError')) {
+        res.status(404).send();
+      }
+      else {
+        res.status(500).send(err);
+      }
+    });
+  }
+
   init() {
     let self = this;
 
@@ -140,10 +171,11 @@ export default class BaseRouter {
       }
     }
 
-    this.router.get('/',       wrap('getAll'));
+    this.router.get('/count',  wrap('getCount'));
     this.router.get('/:id',    wrap('getOne'));
-    this.router.post('/',      wrap('create'));
     this.router.put('/:id',    wrap('update'));
     this.router.delete('/:id', wrap('deleteOne'));
+    this.router.get('/',       wrap('getAll'));
+    this.router.post('/',      wrap('create'));
   }
 }

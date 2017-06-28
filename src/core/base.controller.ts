@@ -100,4 +100,12 @@ export default class BaseController {
       return;
     });
   }
+
+  public count(options) {
+    let query = this.model.where('deleted_at', null);
+    if (options.where) {
+      query.where(whereFilter(options.where));
+    }
+    return query.count();
+  }
 }
