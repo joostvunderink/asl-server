@@ -1,0 +1,32 @@
+# This is the compose file for the local dev env.
+version: '2'
+services:
+  "asl-db":
+    image: "mysql:5.7"
+    # volumes:
+    #  - ./db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: asl
+      MYSQL_USER: asl
+      MYSQL_PASSWORD: asl
+    ports:
+     - "33006:3306"
+  "asl-server":
+    env_file: common.env
+    build: .
+    ports:
+     - "4500:4500"
+    volumes:
+     - .:/var/www/app/current
+    depends_on:
+     - asl-db
+    environment:
+      ASL_DB_HOST: asl-db
+      ASL_DB_USER: asl
+      ASL_DB_PASSWORD: asl
+      ASL_DB_NAME: asl
+# volumes:
+#   db_data:
+
