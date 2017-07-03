@@ -16,4 +16,3 @@ export let bookshelf = bs(knex);
 bookshelf.plugin('registry');
 bookshelf.plugin('visibility');
 bookshelf.plugin(require('bookshelf-eloquent'));
-
