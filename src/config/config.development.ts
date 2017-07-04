@@ -2,7 +2,8 @@ const config = {
   db: {
     client: 'mysql',
     connection: {
-      host     : process.env.ASL_DB_HOST || '127.0.0.1',
+      host     : process.env.ASL_DB_HOST || 'asl-db',
+      port     : 3306,
       user     : process.env.ASL_DB_USER || 'asl',
       password : process.env.ASL_DB_PASSWORD || 'asl',
       database : process.env.ASL_DB_NAME || 'asl',
