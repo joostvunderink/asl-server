@@ -25,7 +25,7 @@ RUN gulp scripts
 # Dockerfile
 # ...
 #Expose the port
-EXPOSE 4500
+EXPOSE 3275
 
 CMD ["gulp", "nodemon-server"]
 # CMD ["pm2", "start", "processes.json", "--no-daemon"]

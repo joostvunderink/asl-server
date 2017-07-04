@@ -17,12 +17,13 @@ services:
     env_file: common.env
     build: .
     ports:
-     - "4500:4500"
+     - "3275:3275"
     volumes:
      - .:/var/www/app/current
     depends_on:
      - asl-db
     environment:
+      PORT: 3275
       ASL_DB_HOST: asl-db
       ASL_DB_USER: asl
       ASL_DB_PASSWORD: asl

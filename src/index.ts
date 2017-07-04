@@ -5,10 +5,11 @@ import app from './app';
 
 debug('ts-express:server');
 
-const port = normalizePort(process.env.PORT || 3000);
+const port = normalizePort(process.env.PORT || 3275);
 app.set('port', port);
 
 const server = http.createServer(app);
+console.log('Starting server on port %s.', port);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -41,4 +42,5 @@ function onListening(): void {
   let addr = server.address();
   let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
+  console.log(`Listening on ${bind}.`);
 }
