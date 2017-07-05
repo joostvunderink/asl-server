@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@types/knex": "0.0.53",
+    "bcryptjs": "2.4.3",
     "body-parser": "1.15.2",
     "bookshelf": "0.10.3",
     "bookshelf-eloquent": "0.1.4",
