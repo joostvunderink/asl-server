@@ -12,7 +12,6 @@ exports.up = function(knex) {
   })
   .then(() => {
     return knex.schema.createTableIfNotExists('oauth_token', function (table) {
-      table.string('id');
       table.string('access_token');
       table.timestamp('access_token_expires_on').defaultTo(knex.fn.now());
       table.string('client_id');
@@ -26,6 +25,7 @@ exports.up = function(knex) {
       table.string('client_id');
       table.string('client_secret');
       table.string('redirect_url');
+      table.string('grants');
     });
   });
 };

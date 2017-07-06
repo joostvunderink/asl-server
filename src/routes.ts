@@ -10,6 +10,7 @@ import RegionRouter              from './api/region/region.router';
 import SeasonRouter              from './api/season/season.router';
 import SportRouter               from './api/sport/sport.router';
 import TeamRouter                from './api/team/team.router';
+import UserRouter                from './api/user/user.router';
 
 
 export default function getRouteConfig() {
@@ -26,5 +27,6 @@ export default function getRouteConfig() {
     'seasons'              : SeasonRouter,
     'sports'               : SportRouter,
     'teams'                : TeamRouter,
+    'users'                : UserRouter,
   };
 }
