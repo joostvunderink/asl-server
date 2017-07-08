@@ -4,7 +4,7 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import getRouteConfig from './routes';
 import { initOauth } from './oauth/routes';
-const oauthServer = require('express-oauth-server');
+const oauthServer = require('oauth2-server');
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -17,21 +17,22 @@ class App {
   constructor() {
     this.express = express();
     this.middleware();
-    this.routes();
     this.initOauth();
+    this.routes();
   }
 
   private initOauth(): void {
-     const os = new oauthServer({
+     const os = oauthServer({
       model: require('./oauth/model'),
-      debug: true
+      grants: ['password', 'client_credentials'],
+      debug: true,
     });
-    console.log('os.token');
-    console.log(os.token);
     this.oauth = os;
-    // Post token.
-    this.express.post('/oauth/token', this.oauth.token());
 
+    // Post token.
+    this.express.post('/oauth/token', this.oauth.grant());
+
+    this.express.use(this.oauth.authorise());
   }
 
   // Configure Express middleware.
