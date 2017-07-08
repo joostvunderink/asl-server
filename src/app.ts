@@ -26,6 +26,7 @@ class App {
       model: require('./oauth/model'),
       grants: ['password', 'client_credentials'],
       debug: true,
+      accessTokenLifetime: 7 * 86400, // one week
     });
     this.oauth = os;
 
