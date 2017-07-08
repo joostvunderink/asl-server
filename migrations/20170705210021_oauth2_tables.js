@@ -1,8 +1,8 @@
 exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('user', function (table) {
     table.increments();
-    table.string('uuid');
-    table.string('email');
+    table.string('uuid').unique();
+    table.string('email').unique();
     table.string('password');
 
     table.string('created_by');
@@ -22,7 +22,7 @@ exports.up = function(knex) {
   })
   .then(() => {
     return knex.schema.createTableIfNotExists('oauth_client', function (table) {
-      table.string('client_id');
+      table.string('client_id').unique();
       table.string('client_secret');
       table.string('redirect_url');
       table.string('grants');
@@ -32,8 +32,8 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
   return Promise.all([
-    knex.schema.dropTable('users'),
-    knex.schema.dropTable('oauth_clients'),
-    knex.schema.dropTable('oauth_tokens'),
+    knex.schema.dropTable('user'),
+    knex.schema.dropTable('oauth_client'),
+    knex.schema.dropTable('oauth_token'),
   ]);
 };
