@@ -3,18 +3,36 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import getRouteConfig from './routes';
+import { initOauth } from './oauth/routes';
+const oauthServer = require('oauth2-server');
 
 // Creates and configures an ExpressJS web server.
 class App {
 
   // ref to Express instance
   public express: express.Application;
+  public oauth;
 
   //Run configuration methods on the Express instance.
   constructor() {
     this.express = express();
     this.middleware();
+    this.initOauth();
     this.routes();
+  }
+
+  private initOauth(): void {
+     const os = oauthServer({
+      model: require('./oauth/model'),
+      grants: ['password', 'client_credentials'],
+      debug: true,
+    });
+    this.oauth = os;
+
+    // Post token.
+    this.express.post('/oauth/token', this.oauth.grant());
+
+    this.express.use(this.oauth.authorise());
   }
 
   // Configure Express middleware.
