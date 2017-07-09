@@ -143,6 +143,13 @@ const data = [
         { id: 2, full_name: 'Ruud Gullit', first_name: 'Ruud', last_name: 'Gullit',  },
     ]
   },
+  {
+    table: 'user',
+    rows: [
+        { id: 1, uuid: '4dc21c5d-cb16-4941-8d98-d35408d11856', email: 'tom@asl',   password: '$2a$10$/bVQvHdrL4Qx0FR8fxjc7uLFmdYNZEg.L9ebiS6/TOagIi88T9W7e' },
+        { id: 2, uuid: '4896153c-d947-4978-a299-5fa8a454df06', email: 'joost@asl', password: '$2a$10$OdSai7uiNEPvGGcJxZcAMueVrpfPyHlznmNgRa8qMxgYf3fNn8sq2' },
+    ]
+  },
 ];
 
 exports.seed = function(knex, Promise) {

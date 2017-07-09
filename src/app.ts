@@ -33,7 +33,13 @@ class App {
     // Post token.
     this.express.post('/oauth/token', this.oauth.grant());
 
-    this.express.use(this.oauth.authorise());
+    if (process.env.NODE_ENV !== 'unittest') {
+      // This disables auth when running unit tests.
+      // TODO: find a good way to handle auth in the test suite.
+      // Authentication/authorisation tests should be a separate bunch, and the
+      // rest of the tests should just test the functionality of the API.
+      this.express.use(this.oauth.authorise());
+    }
   }
 
   // Configure Express middleware.
