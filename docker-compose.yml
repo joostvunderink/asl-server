@@ -19,7 +19,9 @@ services:
     ports:
      - "3275:3275"
     volumes:
-     - .:/var/www/app/current
+     - ./src:/var/www/app/current/src
+     - ./bin:/var/www/app/current/bin
+     - ./migrations:/var/www/app/current/migrations
     depends_on:
      - asl-db
     environment:
