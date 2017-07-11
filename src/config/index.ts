@@ -12,7 +12,7 @@ let _config = {
       directory: './seeds/dev',
     },
     connection: {
-      debug    : process.env.ASL_DB_DEBUG,
+      debug    : process.env.ASL_DB_DEBUG === "1" ? true : false,
       host     : requiredEnvVar('ASL_DB_HOST'),
       user     : requiredEnvVar('ASL_DB_USER'),
       password : requiredEnvVar('ASL_DB_PASSWORD'),
@@ -30,7 +30,7 @@ let _configUnittest = {
       directory: './seeds/unittest',
     },
     connection: {
-      debug    : process.env.ASL_UNITTEST_DB_DEBUG,
+      debug    : process.env.ASL_UNITTEST_DB_DEBUG === "1" ? true : false,
       host     : process.env.ASL_UNITTEST_DB_HOST || '127.0.0.1',
       user     : process.env.ASL_UNITTEST_DB_USER || 'asl_ut',
       password : process.env.ASL_UNITTEST_DB_PASSWORD || 'asl_ut',

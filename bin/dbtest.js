@@ -1,6 +1,7 @@
 var knex = require('knex')({
   client:'mysql',
   connection: {
+    debug    : process.env.ASL_DB_DEBUG === "1" ? true : false,
     host     : process.env.ASL_DB_HOST || 'asl-db',
     port     : process.env.ASL_DB_PORT || 3306,
     user     : process.env.ASL_DB_USER || 'asl',
