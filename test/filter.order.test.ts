@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 describe('Filter: order', () => {
   it('orders clubs by name', () => {
-    return chai.request(app).get('/clubs/?filter={"order":"name ASC"}')
+    return chai.request(app).get('/api/v1/clubs/?filter={"order":"name ASC"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -37,7 +37,7 @@ describe('Filter: order', () => {
   });
 
   it('orders clubs by name desc', () => {
-    return chai.request(app).get('/clubs/?filter={"order":"name DESC"}')
+    return chai.request(app).get('/api/v1/clubs/?filter={"order":"name DESC"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

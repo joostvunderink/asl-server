@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 describe('Filter: where, operator: equals', () => {
   it('finds regions where country_id = 1', () => {
-    return chai.request(app).get('/regions?filter={"where":{"country_id":1}}')
+    return chai.request(app).get('/api/v1/regions?filter={"where":{"country_id":1}}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -21,7 +21,7 @@ describe('Filter: where, operator: equals', () => {
       });
   });
   it('finds regions where country_id = 1 and sport_id = 1', () => {
-    return chai.request(app).get('/regions?filter={"where":{"country_id":1,"sport_id":1}}')
+    return chai.request(app).get('/api/v1/regions?filter={"where":{"country_id":1,"sport_id":1}}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -34,7 +34,7 @@ describe('Filter: where, operator: equals', () => {
       });
   });
   it('finds regions where sport_id = 1 and region name starts with "West"', () => {
-    return chai.request(app).get('/regions?filter={"where":{"sport_id":1,"name":{"like":"West%25"}}}')
+    return chai.request(app).get('/api/v1/regions?filter={"where":{"sport_id":1,"name":{"like":"West%25"}}}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

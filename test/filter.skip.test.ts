@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 describe('Filter: skip', () => {
   it('skips a given amount of results', () => {
-    return chai.request(app).get('/clubs/?filter={"order":"name DESC","limit":5,"skip":5}')
+    return chai.request(app).get('/api/v1/clubs/?filter={"order":"name DESC","limit":5,"skip":5}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

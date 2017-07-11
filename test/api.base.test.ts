@@ -23,7 +23,7 @@ for (const key in routeConfig) {
 describe('GET /<model>', () => {
   testData.forEach(td => {
     it('responds with JSON array for ' + td.modelName, () => {
-      return chai.request(app).get('/' + td.modelName)
+      return chai.request(app).get('/api/v1/' + td.modelName)
         .then(res => {
           expect(res.status).to.equal(200);
           expect(res).to.be.json;
@@ -48,7 +48,7 @@ describe('GET /<model>', () => {
 describe('GET /<model>/:id', () => {
   testData.forEach(td => {
     it('responds with ' + td.modelName + ' object', () => {
-      return chai.request(app).get('/' + td.modelName + '/' + td.idPresent)
+      return chai.request(app).get('/api/v1/' + td.modelName + '/' + td.idPresent)
         .then(res => {
           expect(res.status).to.equal(200);
           expect(res).to.be.json;
@@ -65,7 +65,7 @@ describe('GET /<model>/:id', () => {
   
   testData.forEach(td => {
     it('responds with 404 when the ' + td.modelName + ' does not exist', () => {
-      return chai.request(app).get('/' + td.modelName + '/' + td.idNotPresent)
+      return chai.request(app).get('/api/v1/' + td.modelName + '/' + td.idNotPresent)
         .then(res => {
           expect('we should not').to.equal('end up here');
         })
@@ -79,7 +79,7 @@ describe('GET /<model>/:id', () => {
 describe('PUT /<model>/:id', () => {
   testData.forEach(td => {
     it('responds with 404 when the ' + td.modelName + ' does not exist', () => {
-      return chai.request(app).put('/' + td.modelName + '/' + td.idNotPresent)
+      return chai.request(app).put('/api/v1/' + td.modelName + '/' + td.idNotPresent)
         .send({})
         .then(res => {
           expect('we should not').to.equal('end up here');
@@ -94,7 +94,7 @@ describe('PUT /<model>/:id', () => {
 describe('POST /<model>', () => {
   testData.forEach(td => {
     it('responds with 400 for invalid field on ' + td.modelName, () => {
-      return chai.request(app).post('/countries')
+      return chai.request(app).post('/api/v1/countries')
         .send({ an_invalid_field_name: 'value' })
         .then(res => {
           expect('we should not').to.equal('end up here');

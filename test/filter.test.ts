@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 describe('Filter: where, operator: equals', () => {
   it('returns 400 for invalid JSON in filter', () => {
-    return chai.request(app).get('/regions?filter={"where":{"region_id":1}') // Missing }
+    return chai.request(app).get('/api/v1/regions?filter={"where":{"region_id":1}') // Missing }
       .then(res => {
         expect('we should not').to.equal('end up here');
       })

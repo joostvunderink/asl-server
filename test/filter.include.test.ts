@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 describe('Filter: include', () => {
   it('finds a club with 2 teams', () => {
-    return chai.request(app).get('/clubs/1?filter={"include":"teams"}')
+    return chai.request(app).get('/api/v1/clubs/1?filter={"include":"teams"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -23,7 +23,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds a team with a club', () => {
-    return chai.request(app).get('/teams/1?filter={"include":"club"}')
+    return chai.request(app).get('/api/v1/teams/1?filter={"include":"club"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -34,7 +34,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds all clubs teams included', () => {
-    return chai.request(app).get('/clubs/?filter={"include":"teams"}')
+    return chai.request(app).get('/api/v1/clubs/?filter={"include":"teams"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -46,7 +46,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds all teams with club included', () => {
-    return chai.request(app).get('/teams/?filter={"include":"club"}')
+    return chai.request(app).get('/api/v1/teams/?filter={"include":"club"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
