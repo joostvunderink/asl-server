@@ -1,21 +1,21 @@
-import configDev from './config.development';
-import configUnittest from './config.unittest';
-import configTest from './config.test';
-import configProduction from './config.production';
+function requiredEnvVar(name) {
+  if (!process.env[name]) {
+    throw new Error('Missing required env var ' + name);
+  }
+  return process.env[name];
+}
 
-console.log('Loading configuration. NODE_ENV is %s', process.env.NODE_ENV);
-
-const configs = {
-  development: configDev,
-  unittest   : configUnittest,
-  production : configProduction,
-  test       : configTest,
+export const config = {
+  db: {
+    client: 'mysql',
+    connection: {
+      debug    : requiredEnvVar('ASL_DB_DEBUG'),
+      host     : requiredEnvVar('ASL_DB_HOST'),
+      user     : requiredEnvVar('ASL_DB_USER'),
+      password : requiredEnvVar('ASL_DB_PASSWORD'),
+      database : requiredEnvVar('ASL_DB_NAME'),
+      port     : process.env.ASL_DB_PORT || 3306,
+      charset  : process.env.ASL_DB_CHARSET || 'utf8',
+    },
+  }
 };
-
-const env = process.env.NODE_ENV || 'development';
-const config = configs[env];
-
-console.log('Config for env %s', env);
-console.log(JSON.stringify(config));
-
-export default config;

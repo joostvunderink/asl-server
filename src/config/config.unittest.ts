@@ -1,4 +1,4 @@
-const config = {
+export const unittestConfig = {
   db: {
     client: 'mysql',
     seeds: {
@@ -13,5 +13,3 @@ const config = {
     }
   }
 };
-
-export default config;
