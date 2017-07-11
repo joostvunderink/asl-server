@@ -5,11 +5,14 @@ function requiredEnvVar(name) {
   return process.env[name];
 }
 
-export const config = {
+let _config = {
   db: {
     client: 'mysql',
+    seeds: {
+      directory: './seeds/dev',
+    },
     connection: {
-      debug    : requiredEnvVar('ASL_DB_DEBUG'),
+      debug    : process.env.ASL_DB_DEBUG,
       host     : requiredEnvVar('ASL_DB_HOST'),
       user     : requiredEnvVar('ASL_DB_USER'),
       password : requiredEnvVar('ASL_DB_PASSWORD'),
@@ -19,3 +22,23 @@ export const config = {
     },
   }
 };
+
+let _configUnittest = {
+  db: {
+    client: 'mysql',
+    seeds: {
+      directory: './seeds/unittest',
+    },
+    connection: {
+      debug    : process.env.ASL_UNITTEST_DB_DEBUG,
+      host     : process.env.ASL_UNITTEST_DB_HOST || '127.0.0.1',
+      user     : process.env.ASL_UNITTEST_DB_USER || 'asl_ut',
+      password : process.env.ASL_UNITTEST_DB_PASSWORD || 'asl_ut',
+      database : process.env.ASL_UNITTEST_DB_NAME || 'asl_ut',
+      port     : process.env.ASL_UNITTEST_DB_PORT || 3306,
+      charset  : process.env.ASL_UNITTEST_DB_CHARSET || 'utf8',
+    }
+  }
+};
+
+export const config = process.env.NODE_ENV === 'unittest' ? _configUnittest : _config;

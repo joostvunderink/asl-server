@@ -5,7 +5,7 @@
   "scripts": {
     "start": "gulp scripts && npm run migrate && node dist/index.js",
     "start-dev": "nodemon dist/index.js",
-    "test": "rm -f asl-unittest.sqlite && NODE_ENV=unittest knex migrate:latest && NODE_ENV=unittest knex seed:run && NODE_ENV=unittest mocha --reporter spec --compilers ts:ts-node/register 'test/**/*.test.ts'",
+    "test": "NODE_ENV=unittest knex migrate:latest && NODE_ENV=unittest knex seed:run && NODE_ENV=unittest mocha --reporter spec --compilers ts:ts-node/register 'test/**/*.test.ts'",
     "bootstrap": "node bin/add-bootstrap-data.ts",
     "migrate": "knex migrate:latest",
     "migrate-rollback": "knex migrate:rollback",
