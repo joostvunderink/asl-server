@@ -89,7 +89,7 @@ export function saveAccessToken(accessToken, clientId, expires, user, callback) 
 }
 
 export function getAccessToken(bearerToken, callback) {
-  console.log('model: getAccessToken');
+  // console.log('model: getAccessToken');
   return knex('oauth_token').where('access_token', bearerToken)
   .then((tokens) => {
     if (tokens.length !== 1) {

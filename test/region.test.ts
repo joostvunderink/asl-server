@@ -1,15 +1,9 @@
 import * as mocha from 'mocha';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
-
-import app from '../src/app';
-
-chai.use(chaiHttp);
-const expect = chai.expect;
+import { chapp, app, expect, authedReq } from './helper';
 
 describe('GET regions', () => {
   it('should include West 1', () => {
-    return chai.request(app).get('/api/v1/regions')
+    return authedReq('get', '/api/v1/regions')
       .then(res => {
         let obj = res.body.find(region => region.name === 'West 1');
         expect(obj).to.exist;
@@ -25,7 +19,7 @@ describe('GET regions', () => {
 
 describe('GET region', () => {
   it('responds with region object', () => {
-    return chai.request(app).get('/api/v1/regions/1')
+    return authedReq('get', '/api/v1/regions/1')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -44,7 +38,7 @@ describe('GET region', () => {
 
 describe('POST region', () => {
   it('responds with created region object', () => {
-    return chai.request(app).post('/api/v1/regions')
+    return authedReq('post', '/api/v1/regions')
       .send({ name: 'Zuid 1', description: 'West South part of NL' })
       .then(res => {
         expect(res.status).to.equal(201);
@@ -66,7 +60,7 @@ describe('POST region', () => {
 
 describe('PUT region', () => {
   it('updates data and responds with updated region', () => {
-    return chai.request(app).put('/api/v1/regions/1')
+    return authedReq('put', '/api/v1/regions/1')
       .send({ description: 'new description' })
       .then(res => {
         expect(res.status).to.equal(200);
@@ -94,19 +88,19 @@ describe('DELETE region', () => {
   it('deletes an existing region object', () => {
     let regionId;
     // Create a new region
-    return chai.request(app).post('/api/v1/regions')
+    return authedReq('post', '/api/v1/regions')
       .send({ description: 'To Be Deleted', name: 'tbd' })
       .then(res => {
         expect(res.status).to.equal(201);
         expect(res).to.be.json;
         regionId = res.body.id;
         // Delete the region
-        return chai.request(app).del('/api/v1/regions/' + regionId);
+        return authedReq('del', '/api/v1/regions/' + regionId);
       })
       .then(res => {
         expect(res.status).to.equal(204);
         // Re-fetch the region; should result in 404.
-        return chai.request(app).get('/api/v1/regions/' + regionId);
+        return authedReq('get', '/api/v1/regions/' + regionId);
       })
       .then(res => {
         expect('we should not').to.equal('end up here');

@@ -1,15 +1,9 @@
 import * as mocha from 'mocha';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
-
-import app from '../src/app';
-
-chai.use(chaiHttp);
-const expect = chai.expect;
+import { chapp, app, expect, authedReq } from './helper';
 
 describe('Filter: order', () => {
   it('limits results', () => {
-    return chai.request(app).get('/api/v1/clubs/?filter={"limit":4}')
+    return authedReq('get', '/api/v1/clubs/?filter={"limit":4}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -20,7 +14,7 @@ describe('Filter: order', () => {
   });
 
   it('limit works together with order', () => {
-    return chai.request(app).get('/api/v1/clubs/?filter={"order":"name DESC","limit":5}')
+    return authedReq('get', '/api/v1/clubs/?filter={"order":"name DESC","limit":5}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

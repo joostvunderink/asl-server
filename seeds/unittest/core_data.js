@@ -150,6 +150,14 @@ const data = [
         { id: 2, uuid: '4896153c-d947-4978-a299-5fa8a454df06', email: 'joost@asl', password: '$2a$10$OdSai7uiNEPvGGcJxZcAMueVrpfPyHlznmNgRa8qMxgYf3fNn8sq2' },
     ]
   },
+  {
+    table: 'oauth_token',
+    rows: [
+      { access_token: '78454744c8b846b4021ca935735d162e7ebada1a',
+        access_token_expires_on: t(((new Date()).getFullYear() + 1 ) + '-01-01T00:00:00Z'),
+        client_id: 'asl-crm', user_uuid: '4dc21c5d-cb16-4941-8d98-d35408d11856' }
+    ]
+  },
 ];
 
 exports.seed = function(knex, Promise) {

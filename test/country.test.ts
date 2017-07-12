@@ -1,15 +1,9 @@
 import * as mocha from 'mocha';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
-
-import app from '../src/app';
-
-chai.use(chaiHttp);
-const expect = chai.expect;
+import { chapp, app, expect, authedReq } from './helper';
 
 describe('GET countries', () => {
   it('should include The Netherlands', () => {
-    return chai.request(app).get('/api/v1/countries')
+    return authedReq('get', '/api/v1/countries')
       .then(res => {
         let nl = res.body.find(country => country.code === 'nl');
         expect(nl).to.exist;
@@ -23,7 +17,7 @@ describe('GET countries', () => {
 
 describe('GET country', () => {
   it('responds with country object', () => {
-    return chai.request(app).get('/api/v1/countries/1')
+    return authedReq('get', '/api/v1/countries/1')
       .then(res => {
         let nl = res.body;
         expect(nl).to.include.all.keys([
@@ -37,7 +31,7 @@ describe('GET country', () => {
 
 describe('POST country', () => {
   it('responds with created country object', () => {
-    return chai.request(app).post('/api/v1/countries')
+    return authedReq('post', '/api/v1/countries')
       .send({ code: 'be', name: 'Belgium' })
       .then(res => {
         expect(res.status).to.equal(201);
@@ -54,7 +48,7 @@ describe('POST country', () => {
   });
 
   it('errors for invalid code', () => {
-    return chai.request(app).post('/api/v1/countries')
+    return authedReq('post', '/api/v1/countries')
       .send({ code: 'GERM', name: 'Germany' })
       .then(res => {
         expect('we should not').to.equal('end up here');
@@ -76,7 +70,7 @@ describe('POST country', () => {
 
 describe('PUT country', () => {
   it('updates data and responds with updated country', () => {
-    return chai.request(app).put('/api/v1/countries/1')
+    return authedReq('put', '/api/v1/countries/1')
       .send({ name: 'Netherlands' })
       .then(res => {
         expect(res.status).to.equal(200);
@@ -102,19 +96,19 @@ describe('DELETE country', () => {
   it('deletes an existing country object', () => {
     let countryId;
     // Create a new country
-    return chai.request(app).post('/api/v1/countries')
+    return authedReq('post', '/api/v1/countries')
       .send({ code: 'zz', name: 'To Be Deleted' })
       .then(res => {
         expect(res.status).to.equal(201);
         expect(res).to.be.json;
         countryId = res.body.id;
         // Delete the country
-        return chai.request(app).del('/countries/' + countryId);
+        return authedReq('del', '/countries/' + countryId);
       })
       .then(res => {
         expect(res.status).to.equal(204);
         // Re-fetch the country; should result in 404.
-        return chai.request(app).get('/countries/' + countryId);
+        return authedReq('get', '/countries/' + countryId);
       })
       .then(res => {
         expect('we should not').to.equal('end up here');

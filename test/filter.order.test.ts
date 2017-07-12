@@ -1,15 +1,9 @@
 import * as mocha from 'mocha';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
-
-import app from '../src/app';
-
-chai.use(chaiHttp);
-const expect = chai.expect;
+import { chapp, app, expect, authedReq } from './helper';
 
 describe('Filter: order', () => {
   it('orders clubs by name', () => {
-    return chai.request(app).get('/api/v1/clubs/?filter={"order":"name ASC"}')
+    return authedReq('get', '/api/v1/clubs/?filter={"order":"name ASC"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -37,7 +31,7 @@ describe('Filter: order', () => {
   });
 
   it('orders clubs by name desc', () => {
-    return chai.request(app).get('/api/v1/clubs/?filter={"order":"name DESC"}')
+    return authedReq('get', '/api/v1/clubs/?filter={"order":"name DESC"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

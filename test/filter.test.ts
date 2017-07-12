@@ -1,15 +1,9 @@
 import * as mocha from 'mocha';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
-
-import app from '../src/app';
-
-chai.use(chaiHttp);
-const expect = chai.expect;
+import { chapp, app, expect, authedReq } from './helper';
 
 describe('Filter: where, operator: equals', () => {
   it('returns 400 for invalid JSON in filter', () => {
-    return chai.request(app).get('/api/v1/regions?filter={"where":{"region_id":1}') // Missing }
+    return authedReq('get', '/api/v1/regions?filter={"where":{"region_id":1}') // Missing }
       .then(res => {
         expect('we should not').to.equal('end up here');
       })
