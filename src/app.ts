@@ -34,15 +34,9 @@ class App {
     // Post token.
     this.express.post('/oauth/token', this.oauth.grant());
 
-    function checkUser(req, res, next) {
-      if (process.env.NODE_ENV !== 'unittest') {
-        // This disables auth when running unit tests.
-        // TODO: find a good way to handle auth in the test suite.
-        // Authentication/authorisation tests should be a separate bunch, and the
-        // rest of the tests should just test the functionality of the API.
-        return next();
-      }
+    this.express.use(checkUser);
 
+    function checkUser(req, res, next) {
       if (req.path === '/meta/ping') {
         return next();
       }
@@ -55,7 +49,7 @@ class App {
 
   // Configure Express middleware.
   private middleware(): void {
-    this.express.use(logger('dev'));
+    // this.express.use(logger('dev'));
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
   }
