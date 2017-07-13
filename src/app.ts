@@ -20,6 +20,7 @@ class App {
     this.middleware();
     this.initOauth();
     this.routes();
+    this.errorHandler();
   }
 
   private initOauth(): void {
@@ -43,6 +44,7 @@ class App {
       if (req.path.startsWith('/oauth')) {
         return next();
       }
+
       self.oauth.authorise()(req, res, next);
     }
   }
@@ -68,6 +70,24 @@ class App {
     }
   }
 
+  private errorHandler(): void {
+    this.express.use(function (err, req, res, next) {
+      let errorMessage, errorCode;
+      if (err.name === 'OAuth2Error') {
+        errorCode = 'ERR_AUTH';
+        if (process.env.NODE_ENV === 'production') {
+          errorMessage = err;
+        }
+        else {
+          errorMessage = err.stack;
+        }
+        return res.status(err.code || 500).send({ code: errorCode, message: errorMessage });
+      }
+
+      console.log('Unknown error. Name: %s, Code: %s, err: %s', err.name, err.code, err);
+      res.status(500).send('Unknown error.');
+    });
+  }
 }
 
 export default new App().express;

@@ -1,6 +1,7 @@
 import User from '../api/user/user.model';
 import { knex, bookshelf } from '../db';
 const bcrypt = require('bcryptjs');
+const OAuth2Error = require('oauth2-server/lib/error');
 
 // Authentication via POST /oauth/token
 // * getClient
@@ -89,12 +90,18 @@ export function saveAccessToken(accessToken, clientId, expires, user, callback) 
 }
 
 export function getAccessToken(bearerToken, callback) {
-  // console.log('model: getAccessToken');
-  return knex('oauth_token').where('access_token', bearerToken)
+  if (!bearerToken) {
+    // Explicit return in case the bearer token is not passed at all.
+    // This protects from the corner case where somehow an access token
+    // ends up in the database with an empty value.
+    return callback();
+  }
+
+  knex('oauth_token').where('access_token', bearerToken)
   .then((tokens) => {
     if (tokens.length !== 1) {
-      console.error('Could not find oauth_token with access_token=%s', bearerToken);
-      return callback('No such bearer token');
+      // console.error('Could not find oauth_token with access_token=%s', bearerToken);
+      return callback();
     }
     const tokenData = {
       accessToken: tokens[0].access_token,
@@ -103,7 +110,12 @@ export function getAccessToken(bearerToken, callback) {
     };
 
     return callback(null, tokenData);
-  });
+  })
+  .catch(e => {
+    console.error('gAT catch');
+    console.error(e);
+    return callback(e);
+  });;
 }
 
 // TODO: do something with this.
