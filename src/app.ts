@@ -6,88 +6,59 @@ import getRouteConfig from './routes';
 import { initOauth } from './oauth/routes';
 const oauthServer = require('oauth2-server');
 
-// Creates and configures an ExpressJS web server.
-class App {
+let app = express();
 
-  // ref to Express instance
-  public express: express.Application;
-  public oauth;
+const os = oauthServer({
+  model: require('./oauth/model'),
+  grants: ['password', 'client_credentials'],
+  accessTokenLifetime: 7 * 86400, // one week
+});
 
-  //Run configuration methods on the Express instance.
-  constructor() {
-    this.express = express();
-    this.metaRoutes();
-    this.middleware();
-    this.initOauth();
-    this.routes();
-    this.errorHandler();
+function checkAuthentication(req, res, next) {
+  if (app.locals.authenticationDisabled) {
+    return next();
   }
 
-  private initOauth(): void {
-    let self = this;
-    const os = oauthServer({
-      model: require('./oauth/model'),
-      grants: ['password', 'client_credentials'],
-      accessTokenLifetime: 7 * 86400, // one week
-    });
-    this.oauth = os;
-
-    // Post token.
-    this.express.post('/oauth/token', this.oauth.grant());
-
-    this.express.use(checkUser);
-
-    function checkUser(req, res, next) {
-      if (req.path === '/meta/ping') {
-        return next();
-      }
-      if (req.path.startsWith('/oauth')) {
-        return next();
-      }
-
-      self.oauth.authorise()(req, res, next);
-    }
+  if (req.path === '/meta/ping') {
+    return next();
+  }
+  if (req.path.startsWith('/oauth')) {
+    return next();
   }
 
-  // Configure Express middleware.
-  private middleware(): void {
-    // this.express.use(logger('dev'));
-    this.express.use(bodyParser.json());
-    this.express.use(bodyParser.urlencoded({ extended: false }));
-  }
-
-  private metaRoutes(): void {
-    this.express.get('/meta/ping', (req, res) => {
-      res.send({ pong: 'Pong!' });
-    });
-  }
-
-  // Configure API endpoints.
-  private routes(): void {
-    const routeConfig = getRouteConfig();
-    for (let m in routeConfig) {
-      this.express.use('/api/v1/' + m, routeConfig[m]);
-    }
-  }
-
-  private errorHandler(): void {
-    this.express.use(function (err, req, res, next) {
-      let errorMessage, errorCode;
-      if (err.name === 'OAuth2Error') {
-        errorCode = 'ERR_AUTH';
-        if (process.env.NODE_ENV === 'production') {
-          errorMessage = err;
-        }
-        else {
-          errorMessage = err.stack;
-        }
-        return res.status(err.code || 500).send({ code: errorCode, message: errorMessage });
-      }
-
-      console.log('Unknown error. Name: %s, Code: %s, err: %s', err.name, err.code, err);
-      res.status(500).send('Unknown error.');
-    });
-  }
+  os.authorise()(req, res, next);
 }
 
-export default new App().express;
+app.post('/oauth/token', os.grant());
+app.use(checkAuthentication);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('/meta/ping', (req, res) => {
+  res.send({ pong: 'Pong!' });
+});
+
+const routeConfig = getRouteConfig();
+for (let m in routeConfig) {
+  app.use('/api/v1/' + m, routeConfig[m]);
+}
+
+app.use(function (err, req, res, next) {
+  let errorMessage, errorCode;
+  if (err.name === 'OAuth2Error') {
+    errorCode = 'ERR_AUTH';
+    if (process.env.NODE_ENV === 'production') {
+      errorMessage = err;
+    }
+    else {
+      errorMessage = err.stack;
+    }
+    return res.status(err.code || 500).send({ code: errorCode, message: errorMessage });
+  }
+
+  console.log('Unknown error. Name: %s, Code: %s, err: %s', err.name, err.code, err);
+  res.status(500).send('Unknown error.');
+});
+
+export default app;

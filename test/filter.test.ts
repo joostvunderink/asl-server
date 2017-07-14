@@ -1,9 +1,12 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq } from './helper';
+import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
 
-describe('Filter: where, operator: equals', () => {
+describe('Filter: errors', () => {
+  beforeEach(disableAuthentication);
+  afterEach(enableAuthentication);
+
   it('returns 400 for invalid JSON in filter', () => {
-    return authedReq('get', '/api/v1/regions?filter={"where":{"region_id":1}') // Missing }
+    return chapp.get('/api/v1/regions?filter={"where":{"region_id":1}') // Missing }
       .then(res => {
         expect('we should not').to.equal('end up here');
       })

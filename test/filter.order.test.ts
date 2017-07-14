@@ -1,9 +1,12 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq } from './helper';
+import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
 
 describe('Filter: order', () => {
+  beforeEach(disableAuthentication);
+  afterEach(enableAuthentication);
+
   it('orders clubs by name', () => {
-    return authedReq('get', '/api/v1/clubs/?filter={"order":"name ASC"}')
+    return chapp.get('/api/v1/clubs/?filter={"order":"name ASC"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -31,7 +34,7 @@ describe('Filter: order', () => {
   });
 
   it('orders clubs by name desc', () => {
-    return authedReq('get', '/api/v1/clubs/?filter={"order":"name DESC"}')
+    return chapp.get('/api/v1/clubs/?filter={"order":"name DESC"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

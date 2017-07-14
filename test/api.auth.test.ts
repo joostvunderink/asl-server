@@ -1,5 +1,5 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq } from './helper';
+import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
 
 describe('GET request with invalid credentials', () => {
   it('should be denied with a 401 error for invalid token', () => {

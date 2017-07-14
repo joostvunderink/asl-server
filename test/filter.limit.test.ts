@@ -1,9 +1,12 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq } from './helper';
+import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
 
-describe('Filter: order', () => {
+describe('Filter: limit', () => {
+  beforeEach(disableAuthentication);
+  afterEach(enableAuthentication);
+
   it('limits results', () => {
-    return authedReq('get', '/api/v1/clubs/?filter={"limit":4}')
+    return chapp.get('/api/v1/clubs/?filter={"limit":4}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -14,7 +17,7 @@ describe('Filter: order', () => {
   });
 
   it('limit works together with order', () => {
-    return authedReq('get', '/api/v1/clubs/?filter={"order":"name DESC","limit":5}')
+    return chapp.get('/api/v1/clubs/?filter={"order":"name DESC","limit":5}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

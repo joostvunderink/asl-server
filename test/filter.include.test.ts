@@ -1,9 +1,12 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq } from './helper';
+import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
 
 describe('Filter: include', () => {
+  beforeEach(disableAuthentication);
+  afterEach(enableAuthentication);
+
   it('finds a club with 2 teams', () => {
-    return authedReq('get', '/api/v1/clubs/1?filter={"include":"teams"}')
+    return chapp.get('/api/v1/clubs/1?filter={"include":"teams"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -17,7 +20,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds a team with a club', () => {
-    return authedReq('get', '/api/v1/teams/1?filter={"include":"club"}')
+    return chapp.get('/api/v1/teams/1?filter={"include":"club"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -28,7 +31,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds all clubs teams included', () => {
-    return authedReq('get', '/api/v1/clubs/?filter={"include":"teams"}')
+    return chapp.get('/api/v1/clubs/?filter={"include":"teams"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -40,7 +43,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds all teams with club included', () => {
-    return authedReq('get', '/api/v1/teams/?filter={"include":"club"}')
+    return chapp.get('/api/v1/teams/?filter={"include":"club"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

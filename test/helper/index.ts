@@ -12,8 +12,16 @@ function authedReq(method, url) {
   return chapp[method](url).set('Authorization', 'Bearer ' + validAccessToken);
 }
 
+function disableAuthentication() {
+  app.locals.authenticationDisabled = true;
+}
+
+function enableAuthentication() {
+  app.locals.authenticationDisabled = false;
+}
+
 // before((done) => {
 //   done();
 // });
 
-export { app, chapp, expect, validAccessToken, authedReq };
+export { app, chapp, expect, validAccessToken, authedReq, disableAuthentication, enableAuthentication };
