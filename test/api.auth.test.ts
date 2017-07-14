@@ -1,6 +1,16 @@
 import * as mocha from 'mocha';
 import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
 
+describe('GET request with valid credentials', () => {
+  it('should give a 200 OK', () => {
+    return chapp.get('/api/v1/countries').set('Authorization', 'Bearer 78454744c8b846b4021ca935735d162e7ebada1a')
+      .then(res => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
+      });
+  });
+});
+
 describe('GET request with invalid credentials', () => {
   it('should be denied with a 401 error for invalid token', () => {
     return chapp.get('/api/v1/countries').set('Authorization', 'Bearer 78454744c8b846b4021ca935735d162e7ebadxxx')
