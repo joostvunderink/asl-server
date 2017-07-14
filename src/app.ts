@@ -15,7 +15,11 @@ const os = oauthServer({
 });
 
 function checkAuthentication(req, res, next) {
-  if (app.locals.authenticationDisabled) {
+  if (process.env.NODE_ENV === 'unittest' && app.locals.authenticationDisabled) {
+    req.user = {
+      email: 'test@user',
+      uuid: '9d1971e4-0a36-4070-9760-ca0a6bbb6821',
+    };
     return next();
   }
 
@@ -29,8 +33,17 @@ function checkAuthentication(req, res, next) {
   os.authorise()(req, res, next);
 }
 
+function checkAuthorisation(req, res, next) {
+  if (process.env.NODE_ENV === 'unittest' && app.locals.authorisationDisabled) {
+    return next();
+  }
+
+  next();
+}
+
 app.post('/oauth/token', os.grant());
 app.use(checkAuthentication);
+app.use(checkAuthorisation);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

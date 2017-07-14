@@ -97,16 +97,39 @@ export function getAccessToken(bearerToken, callback) {
     return callback();
   }
 
+  // TODO: This promise chain makes error handling difficult.
+  // Rewrite this, maybe to await/async.
+  let token, user;
+  let errorForCallback;
+
   knex('oauth_token').where('access_token', bearerToken)
   .then((tokens) => {
     if (tokens.length !== 1) {
       // console.error('Could not find oauth_token with access_token=%s', bearerToken);
-      return callback();
+      throw new Error('Access token not found');
     }
+
+    token = tokens[0];
+      
+    return User.where('uuid', token.user_uuid).fetch();
+  })
+  .then(user => {
+    if (!user) {
+      errorForCallback = 'User not found by token\'s user_uuid';
+      throw new Error('User not found by token\'s user_uuid');
+    }
+    
     const tokenData = {
-      accessToken: tokens[0].access_token,
-      expires: tokens[0].access_token_expires_on,
-      clientId: tokens[0].client_id,
+      accessToken: token.access_token,
+      expires    : token.access_token_expires_on,
+      clientId   : token.client_id,
+      user: {
+        email: user.get('email'),
+        id   : user.get('id'),
+        uuid : user.get('uuid'),
+        roles: [],
+        permissions: {},
+      }
     };
 
     return callback(null, tokenData);
@@ -114,7 +137,7 @@ export function getAccessToken(bearerToken, callback) {
   .catch(e => {
     console.error('gAT catch');
     console.error(e);
-    return callback(e);
+    return callback(errorForCallback);
   });;
 }
 
