@@ -1,4 +1,5 @@
 import User from '../api/user/user.model';
+import Role from '../api/role/role.model';
 import { knex, bookshelf } from '../db';
 const bcrypt = require('bcryptjs');
 const OAuth2Error = require('oauth2-server/lib/error');
@@ -111,14 +112,14 @@ export function getAccessToken(bearerToken, callback) {
 
     token = tokens[0];
       
-    return User.where('uuid', token.user_uuid).fetch();
+    return User.where('uuid', token.user_uuid).fetch({ withRelated: ['roles'] });
   })
   .then(user => {
     if (!user) {
       errorForCallback = 'User not found by token\'s user_uuid';
       throw new Error('User not found by token\'s user_uuid');
     }
-    
+
     const tokenData = {
       accessToken: token.access_token,
       expires    : token.access_token_expires_on,
@@ -127,7 +128,7 @@ export function getAccessToken(bearerToken, callback) {
         email: user.get('email'),
         id   : user.get('id'),
         uuid : user.get('uuid'),
-        roles: [],
+        roles: user.related('roles').map(role => role.get('name')),
         permissions: {},
       }
     };

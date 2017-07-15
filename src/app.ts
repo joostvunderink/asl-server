@@ -34,6 +34,9 @@ function checkAuthentication(req, res, next) {
 }
 
 function checkAuthorisation(req, res, next) {
+  // Here, req.user contains:
+  // user.roles = ['admin', 'user', ...]
+  // user.permissions = ...?? data structure to be determined
   if (process.env.NODE_ENV === 'unittest' && app.locals.authorisationDisabled) {
     return next();
   }

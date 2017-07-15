@@ -1,8 +1,10 @@
 import * as mocha from 'mocha';
 import * as chai from 'chai';
 import { knex, bookshelf } from '../src/db';
-import Team from '../src/api/team/team.model';
+
 import Club from '../src/api/club/club.model';
+import Team from '../src/api/team/team.model';
+import User from '../src/api/user/user.model';
 
 const expect = chai.expect;
 
@@ -31,6 +33,18 @@ describe('Team/Club relationship', () => {
     })
     .catch(err => {
       expect(err.message).to.contain('clubs');
+    });
+  });
+});
+
+describe('User/Role relationship', () => {
+  it('User has Roles', () => {
+    return User.where('id', 1).fetch({ withRelated: ['roles'] }).then(user => {
+      const roles = user.related('roles').toJSON();
+      expect(roles).to.be.an('array');
+      expect(roles).to.have.length(2);
+      const roleNames = roles.map(role => role.name).sort();
+      expect(roleNames).to.deep.equal(['admin', 'user']);
     });
   });
 });
