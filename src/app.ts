@@ -8,6 +8,9 @@ const oauthServer = require('oauth2-server');
 
 let app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 const os = oauthServer({
   model: require('./oauth/model'),
   grants: ['password', 'client_credentials'],
@@ -30,6 +33,7 @@ function checkAuthentication(req, res, next) {
     return next();
   }
 
+  // oauth2-server makes sure that req.user is set when this call succeeds.
   os.authorise()(req, res, next);
 }
 
@@ -40,16 +44,12 @@ function checkAuthorisation(req, res, next) {
   if (process.env.NODE_ENV === 'unittest' && app.locals.authorisationDisabled) {
     return next();
   }
-
   next();
 }
 
 app.post('/oauth/token', os.grant());
 app.use(checkAuthentication);
 app.use(checkAuthorisation);
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/meta/ping', (req, res) => {
   res.send({ pong: 'Pong!' });
