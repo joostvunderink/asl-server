@@ -1,9 +1,9 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
 describe('Filter: where, operator: equals', () => {
-  beforeEach(disableAuthentication);
-  afterEach(enableAuthentication);
+  beforeEach(disableAuth);
+  afterEach(enableAuth);
   it('finds regions where country_id = 1', () => {
     return chapp.get('/api/v1/regions?filter={"where":{"country_id":1}}')
       .then(res => {

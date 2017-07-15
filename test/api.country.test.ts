@@ -1,9 +1,9 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
 describe('countries endpoint', () => {
-  beforeEach(disableAuthentication);
-  afterEach(enableAuthentication);
+  beforeEach(disableAuth);
+  afterEach(enableAuth);
 
   describe('GET countries', () => {
     it('should include The Netherlands', () => {
@@ -107,7 +107,7 @@ describe('countries endpoint', () => {
           expect(res).to.be.json;
           countryId = res.body.id;
           // Delete the country
-          return authedReq('del', '/countries/' + countryId);
+          return chapp.del('/countries/' + countryId);
         })
         .then(res => {
           expect(res.status).to.equal(204);

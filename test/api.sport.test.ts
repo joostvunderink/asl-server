@@ -1,9 +1,9 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
 describe('sports endpoint', () => {
-  beforeEach(disableAuthentication);
-  afterEach(enableAuthentication);
+  beforeEach(disableAuth);
+  afterEach(enableAuth);
 
   describe('GET sports', () => {
     it('should include Football', () => {
@@ -101,7 +101,7 @@ describe('sports endpoint', () => {
           expect(res).to.be.json;
           sportId = res.body.id;
           // Delete the sport
-          return authedReq('del', '/sports/' + sportId);
+          return chapp.del('/sports/' + sportId);
         })
         .then(res => {
           expect(res.status).to.equal(204);

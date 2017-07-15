@@ -1,9 +1,9 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
 describe('Filter: limit', () => {
-  beforeEach(disableAuthentication);
-  afterEach(enableAuthentication);
+  beforeEach(disableAuth);
+  afterEach(enableAuth);
 
   it('limits results', () => {
     return chapp.get('/api/v1/clubs/?filter={"limit":4}')

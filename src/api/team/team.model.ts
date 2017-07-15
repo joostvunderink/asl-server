@@ -1,12 +1,11 @@
-import { knex, bookshelf, defaultTableDef } from '../../db';
-import * as _ from 'lodash';
+import { aslModel } from '../../db';
 
-require('../club/club.model');
-var Team = bookshelf.model('Team', _.merge(defaultTableDef, {
-  tableName: 'team',
+// require('../club/club.model');
+
+let Team = aslModel('Team', 'team', {
   club: function() {
     return this.belongsTo('Club');
   }
-}));
+});
 
 export default Team;

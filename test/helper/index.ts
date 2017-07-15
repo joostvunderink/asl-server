@@ -2,6 +2,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import app from '../../src/app';
+var permission = require('../../src/core/permission');
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -20,8 +21,33 @@ function enableAuthentication() {
   app.locals.authenticationDisabled = false;
 }
 
+let originalCan;
+function disableAuthorisation() {
+  originalCan = permission.can;
+  permission.can = function() { return Promise.resolve(); }
+}
+
+function enableAuthorisation() {
+  permission.can = originalCan;
+}
+
+function disableAuth() {
+  disableAuthentication();
+  disableAuthorisation();
+}
+
+function enableAuth() {
+  enableAuthentication();
+  enableAuthorisation();
+}
+
 // before((done) => {
 //   done();
 // });
 
-export { app, chapp, expect, validAccessToken, authedReq, disableAuthentication, enableAuthentication };
+export {
+  app, chapp, expect, validAccessToken, authedReq,
+  disableAuthentication, enableAuthentication,
+  disableAuthorisation, enableAuthorisation,
+  disableAuth, enableAuth,
+};

@@ -1,17 +1,15 @@
-import { knex, bookshelf, defaultTableDef } from '../../db';
-import * as _ from 'lodash';
+import { aslModel } from '../../db';
 
-require('../country/country.model');
-require('../sport/sport.model');
+// require('../country/country.model');
+// require('../sport/sport.model');
 
-var Region = bookshelf.model('Region', _.merge(defaultTableDef, {
-  tableName: 'region',
+let Region = aslModel('Region', 'region', {
   country: function() {
     return this.belongsTo('Country');
   },
   sport: function() {
     return this.belongsTo('Sport');
   }
-}));
+});
 
 export default Region;

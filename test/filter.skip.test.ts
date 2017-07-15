@@ -1,9 +1,9 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
 describe('Filter: skip', () => {
-  beforeEach(disableAuthentication);
-  afterEach(enableAuthentication);
+  beforeEach(disableAuth);
+  afterEach(enableAuth);
 
   it('skips a given amount of results', () => {
     return chapp.get('/api/v1/clubs/?filter={"order":"name DESC","limit":5,"skip":5}')

@@ -129,9 +129,12 @@ export function getAccessToken(bearerToken, callback) {
         id   : user.get('id'),
         uuid : user.get('uuid'),
         roles: user.related('roles').map(role => role.get('name')),
+        roleIds: user.related('roles').map(role => role.get('id')),
         permissions: {},
       }
     };
+    // console.log('getAccessToken');
+    // console.log(tokenData);
 
     return callback(null, tokenData);
   })

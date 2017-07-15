@@ -22,6 +22,8 @@ function checkAuthentication(req, res, next) {
     req.user = {
       email: 'test@user',
       uuid: '9d1971e4-0a36-4070-9760-ca0a6bbb6821',
+      roles: ['admin'],
+      roleIds: [1],
     };
     return next();
   }

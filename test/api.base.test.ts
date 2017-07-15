@@ -1,5 +1,5 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
 import getRouteConfig from '../src/routes';
 
@@ -16,8 +16,8 @@ for (const key in routeConfig) {
 };
 
 describe('Basic API tests', () => {
-  beforeEach(disableAuthentication);
-  afterEach(enableAuthentication);
+  beforeEach(disableAuth);
+  afterEach(enableAuth);
 
   describe('GET /<model>', () => {
     testData.forEach(td => {

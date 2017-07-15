@@ -1,7 +1,7 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq } from './helper';
 
-describe('GET request with valid credentials', () => {
+describe('GET request with valid credentials and permissions', () => {
   it('should give a 200 OK', () => {
     return chapp.get('/api/v1/countries').set('Authorization', 'Bearer 78454744c8b846b4021ca935735d162e7ebada1a')
       .then(res => {
@@ -49,3 +49,18 @@ describe('GET request with invalid credentials', () => {
       });
   });
 });
+
+describe('GET request with valid credentials but no permissions', () => {
+  it('should error', () => {
+    return chapp.get('/api/v1/regions').set('Authorization', 'Bearer 78454744c8b846b4021ca935735d162e7ebada1a')
+      .then(res => {
+        expect('we should not').to.equal('end up here');
+      })
+      .catch(err => {
+        // TODO: Should be 401!
+        expect(err.status).to.equal(500);
+        // expect(res.body).to.be.an('array');
+      });
+  });
+});
+

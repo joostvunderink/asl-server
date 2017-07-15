@@ -1,8 +1,5 @@
-import { knex, bookshelf, defaultTableDef } from '../../db';
-import * as _ from 'lodash';
+import { aslModel } from '../../db';
 
-var Season = bookshelf.model('Season', _.merge(defaultTableDef, {
-  tableName: 'season'
-}));
+var Season = aslModel('Season', 'season', {});
 
 export default Season;

@@ -1,14 +1,12 @@
-import { knex, bookshelf, defaultTableDef } from '../../db';
-import * as _ from 'lodash';
+import { aslModel } from '../../db';
 
-require('../role/role.model');
-require('../user-role/user-role.model');
+// require('../role/role.model');
+// require('../user-role/user-role.model');
 
-var User = bookshelf.model('User', _.merge(defaultTableDef, {
-  tableName: 'user',
+let User = aslModel('User', 'user', {
   roles: function() {
     return this.belongsToMany('Role', 'user_role');
   },
-}));
+});
 
 export default User;

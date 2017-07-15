@@ -1,14 +1,20 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { can } from './permission';
+
+interface AslRequest extends Request {
+  user: any;
+}
 
 export default class BaseRouter {
   router: Router;
+  model: any;
 
   constructor(public controller) {
     this.router = Router();
     this.init();
   }
 
-  getAll(req: Request, res: Response, next: NextFunction) {
+  getAll(req: AslRequest, res: Response, next: NextFunction) {
     let filter;
     if (req.query.filter) {
       try {
@@ -22,7 +28,10 @@ export default class BaseRouter {
       }
     }
     
-    this.controller.getAll({ filter: filter })
+    can(req.user.roleIds, this.controller.model.tableName, 'read')
+    .then(() => {
+      return this.controller.getAll({ filter: filter });
+    })
     .then((ret) => {
       res.status(200).send(ret);
     })

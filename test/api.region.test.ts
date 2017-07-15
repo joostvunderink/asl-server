@@ -1,9 +1,9 @@
 import * as mocha from 'mocha';
-import { chapp, app, expect, authedReq, disableAuthentication, enableAuthentication } from './helper';
+import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
 describe('regions endpoint', () => {
-  beforeEach(disableAuthentication);
-  afterEach(enableAuthentication);
+  beforeEach(disableAuth);
+  afterEach(enableAuth);
 
   describe('GET regions', () => {
     it('should include West 1', () => {
@@ -36,6 +36,27 @@ describe('regions endpoint', () => {
             'sport_id',
           ]);
           expect(obj.name).to.equal('West 1');
+        });
+    });
+  });
+
+  describe('GET region with country and sport included', () => {
+    it('responds with region object', () => {
+      return chapp.get('/api/v1/regions/1?filter={"include":["country","sport"]}')
+        .then(res => {
+          expect(res.status).to.equal(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.an('object');
+          let obj = res.body;
+          expect(obj).to.contain.all.keys([
+            'name',
+            'description',
+            'country_id',
+            'sport_id',
+          ]);
+          expect(obj.name).to.equal('West 1');
+          expect(obj.country.code).to.equal('nl');
+          expect(obj.sport.name).to.equal('football');
         });
     });
   });
@@ -99,7 +120,7 @@ describe('regions endpoint', () => {
           expect(res).to.be.json;
           regionId = res.body.id;
           // Delete the region
-          return authedReq('del', '/api/v1/regions/' + regionId);
+          return chapp.del('/api/v1/regions/' + regionId);
         })
         .then(res => {
           expect(res.status).to.equal(204);
