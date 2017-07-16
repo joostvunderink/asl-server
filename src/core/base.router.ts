@@ -43,7 +43,7 @@ export default class BaseRouter {
      });;
   }
 
-  public getOne(req: Request, res: Response, next: NextFunction) {
+  public getOne(req: AslRequest, res: Response, next: NextFunction) {
     let filter;
     if (req.query.filter) {
       try {
@@ -57,7 +57,10 @@ export default class BaseRouter {
       }
     }
 
-    this.controller.getOne({ id: req.params.id, filter: filter })
+    can(req.user.roleIds, this.controller.model.tableName, 'read')
+    .then(() => {
+      return this.controller.getOne({ id: req.params.id, filter: filter });
+    })
     .then(ret => {
       res.status(200).send(ret);
      })
@@ -75,8 +78,11 @@ export default class BaseRouter {
     });
   }
 
-  public create(req: Request, res: Response, next: NextFunction) {
-    this.controller.create(req.body)
+  public create(req: AslRequest, res: Response, next: NextFunction) {
+    can(req.user.roleIds, this.controller.model.tableName, 'create')
+    .then(() => {
+      return this.controller.create(req.body)
+    })
     .then((createdEntity) => {
       // TODO: Add Location header. Figure out how to determine the base API URL here.
       res.status(201).send(createdEntity);
@@ -98,8 +104,11 @@ export default class BaseRouter {
     });
   }
 
-  public update(req: Request, res: Response, next: NextFunction) {
-    this.controller.update(req.params.id, req.body)
+  public update(req: AslRequest, res: Response, next: NextFunction) {
+    can(req.user.roleIds, this.controller.model.tableName, 'update')
+    .then(() => {
+      return this.controller.update(req.params.id, req.body);
+    })
     .then((updatedEntity) => {
       res.status(200).send(updatedEntity);
     })
@@ -117,8 +126,11 @@ export default class BaseRouter {
     });
   }
 
-  public deleteOne(req: Request, res: Response, next: NextFunction) {
-    this.controller.delete(req.params.id)
+  public deleteOne(req: AslRequest, res: Response, next: NextFunction) {
+    can(req.user.roleIds, this.controller.model.tableName, 'delete')
+    .then(() => {
+      return this.controller.delete(req.params.id);
+    })
     .then(() => {
       res.status(204).send();
     })
@@ -135,7 +147,7 @@ export default class BaseRouter {
     });
   }
 
-  public getCount(req: Request, res: Response, next: NextFunction) {
+  public getCount(req: AslRequest, res: Response, next: NextFunction) {
     let where;
     if (req.query.where) {
       try {
@@ -149,7 +161,10 @@ export default class BaseRouter {
       }
     }
 
-    this.controller.count({ where: where })
+    can(req.user.roleIds, this.controller.model.tableName, 'read')
+    .then(() => {
+      return this.controller.count({ where: where });
+    })
     .then((numRows) => {
       res.status(200).send({ count: numRows });
     })
