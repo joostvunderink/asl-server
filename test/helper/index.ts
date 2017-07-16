@@ -41,13 +41,12 @@ function enableAuth() {
   enableAuthorisation();
 }
 
-// before((done) => {
-//   done();
-// });
+const adminAuthHeader = 'Bearer 78454744c8b846b4021ca935735d162e7ebada1a';
 
 export {
   app, chapp, expect, validAccessToken, authedReq,
   disableAuthentication, enableAuthentication,
   disableAuthorisation, enableAuthorisation,
   disableAuth, enableAuth,
+  adminAuthHeader,
 };
