@@ -1,7 +1,7 @@
 const { knex, bookshelf, defaultTableDef } = require('../db');
 
 export function can(roleIds, model, operation) {
-  return knex('role_operation')
+  return knex('permission')
         .where('model', model)
         .where('operation', operation)
         .whereIn('role_id', roleIds)

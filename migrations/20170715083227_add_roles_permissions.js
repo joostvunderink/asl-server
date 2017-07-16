@@ -54,7 +54,7 @@ exports.up = function(knex) {
       ro.role_id = roleIdMap[ro.role];
       delete ro.role;
     });
-    return knex('role_operation').insert(roleOperations);
+    return knex('permission').insert(roleOperations);
   })
 };
 
@@ -62,7 +62,7 @@ exports.down = function(knex) {
   return knex('role').whereIn('name', roles.map(role => role.name))
   .then(res => {
     let roleIds = res.map(row => row.id);
-    return knex('role_operation').whereIn('role_id', roleIds).del();
+    return knex('permission').whereIn('role_id', roleIds).del();
   })
   .then(() => {
     return Promise.all(roles.map(role => {

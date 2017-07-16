@@ -9,7 +9,7 @@ exports.up = function(knex) {
     table.timestamp('deleted_at').nullable();
   })
   .then(() => {
-    return knex.schema.createTableIfNotExists('role_operation', function (table) {
+    return knex.schema.createTableIfNotExists('permission', function (table) {
       table.increments();
       table.integer('role_id').unsigned().references('id').inTable('role');
       table.string('model');
@@ -38,7 +38,7 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return Promise.all([
     knex.schema.dropTable('user_role'),
-    knex.schema.dropTable('role_operation'),
+    knex.schema.dropTable('permission'),
     knex.schema.dropTable('role'),
   ]);
 };

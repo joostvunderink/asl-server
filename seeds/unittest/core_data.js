@@ -176,7 +176,7 @@ const data = [
     ]
   },
   {
-    table: 'role_operation',
+    table: 'permission',
     rows: [
       { id: 1, role_id: 1, model: 'country', operation: 'create' },
       { id: 2, role_id: 1, model: 'country', operation: 'read' },
