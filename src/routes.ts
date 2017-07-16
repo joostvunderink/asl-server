@@ -5,6 +5,7 @@ import CompetitionRouter         from './api/competition/competition.router';
 import CompetitionTeamRouter     from './api/competition-team/competition-team.router';
 import CompetitionTemplateRouter from './api/competition-template/competition-template.router';
 import CountryRouter             from './api/country/country.router';
+import PermissionRouter          from './api/permission/permission.router';
 import PersonRouter              from './api/person/person.router';
 import RegionRouter              from './api/region/region.router';
 import RoleRouter                from './api/role/role.router';
@@ -24,6 +25,7 @@ export default function getRouteConfig() {
     'competition-rounds'   : CompetitionRoundRouter,
     'competition-templates': CompetitionTemplateRouter,
     'countries'            : CountryRouter,
+    'permissions'          : PermissionRouter,
     'persons'              : PersonRouter,
     'regions'              : RegionRouter,
     'roles'                : RoleRouter,
