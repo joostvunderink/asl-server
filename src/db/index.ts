@@ -16,7 +16,15 @@ bookshelf.plugin('visibility');
 bookshelf.plugin(require('bookshelf-eloquent'));
 
 export function aslModel(modelName, tableName, definition) {
-  let m = bookshelf.model(modelName, _.merge(defaultTableDef, definition, { tableName: tableName }));
+  let def = definition;
+  def.tableName = tableName;
+  if (def.hidden) {
+    def.hidden.push('deleted_at');
+  }
+  else {
+    def.hidden = ['deleted_at'];
+  }
+  let m = bookshelf.model(modelName, def);
   m.tableName = tableName;
   return m;
 }

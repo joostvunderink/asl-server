@@ -6,7 +6,7 @@ describe('users endpoint', () => {
   afterEach(enableAuth);
 
   describe('GET user', () => {
-    it('should include user\'s roles', () => {
+    it.only('should include user\'s roles', () => {
       return chapp.get('/api/v1/users/1?filter={"include":"roles"}')
         .then(res => {
           const user = res.body;
@@ -15,6 +15,7 @@ describe('users endpoint', () => {
             'email',
             'roles',
           ]);
+          expect(user).to.not.have.property('password');
 
           const roles = user.roles;
           expect(roles).to.be.an('array');
