@@ -6,7 +6,7 @@ describe('users endpoint', () => {
   afterEach(enableAuth);
 
   describe('GET user', () => {
-    it.only('should include user\'s roles', () => {
+    it('should include user\'s roles', () => {
       return chapp.get('/api/v1/users/1?filter={"include":"roles"}')
         .then(res => {
           const user = res.body;

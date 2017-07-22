@@ -89,28 +89,4 @@ describe('Basic API tests', () => {
       });
     });
   });
-
-  describe('POST /<model>', () => {
-    testData.forEach(td => {
-      it('responds with 400 for invalid field on ' + td.modelName, () => {
-        return chapp.post('/api/v1/countries')
-          .send({ an_invalid_field_name: 'value' })
-          .then(res => {
-            expect('we should not').to.equal('end up here');
-          })
-          .catch(err => {
-            expect(err.status).to.equal(400);
-            // TODO: Figure out if this is really the best way to get the error text.
-            const errObj = JSON.parse(err.response.error.text);
-            expect(errObj).to.have.all.keys([
-              'message',
-              'code',
-            ]);
-            expect(errObj.code).to.equal('ValidationError');
-            expect(errObj.message).to.contain('an_invalid_field_name');
-          });
-      });
-    });
-  });
-
 });
