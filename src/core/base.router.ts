@@ -28,7 +28,7 @@ export default class BaseRouter {
       }
     }
     
-    return can(req.user.roleIds, this.controller.model.tableName, 'read')
+    return can({ user: req.user, model: this.controller.model.tableName, operation: 'read' })
     .then(() => {
       return this.controller.getAll({ filter: filter });
     })
@@ -54,7 +54,7 @@ export default class BaseRouter {
       }
     }
 
-    return can(req.user.roleIds, this.controller.model.tableName, 'read')
+    return can({ user: req.user, model: this.controller.model.tableName, operation: 'read' })
     .then(() => {
       return this.controller.getOne({ id: req.params.id, filter: filter });
     })
@@ -67,7 +67,7 @@ export default class BaseRouter {
   }
 
   public create(req: AslRequest, res: Response, next: NextFunction) {
-    return can(req.user.roleIds, this.controller.model.tableName, 'create')
+    return can({ user: req.user, model: this.controller.model.tableName, operation: 'create' })
     .then(() => {
       return this.controller.create(req.body)
     })
@@ -81,7 +81,7 @@ export default class BaseRouter {
   }
 
   public update(req: AslRequest, res: Response, next: NextFunction) {
-    return can(req.user.roleIds, this.controller.model.tableName, 'update')
+    return can({ user: req.user, model: this.controller.model.tableName, operation: 'update' })
     .then(() => {
       return this.controller.update(req.params.id, req.body);
     })
@@ -94,7 +94,7 @@ export default class BaseRouter {
   }
 
   public deleteOne(req: AslRequest, res: Response, next: NextFunction) {
-    return can(req.user.roleIds, this.controller.model.tableName, 'delete')
+    return can({ user: req.user, model: this.controller.model.tableName, operation: 'delete' })
     .then(() => {
       return this.controller.delete(req.params.id);
     })
@@ -120,7 +120,7 @@ export default class BaseRouter {
       }
     }
 
-    return can(req.user.roleIds, this.controller.model.tableName, 'read')
+    return can({ user: req.user, model: this.controller.model.tableName, operation: 'read' })
     .then(() => {
       return this.controller.count({ where: where });
     })

@@ -1,3 +1,19 @@
+export class PermissionDeniedError extends Error {
+  statusCode: number;
+  message: string;
+  data: any;
+
+  constructor(options) {
+    const { message, statusCode, data } = options;
+    super(message);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, PermissionDeniedError.prototype);
+    this.statusCode = statusCode || 401;
+    this.data = data || {};
+  }
+}
+
 function getErrorMessage(err) {
   if (process.env.NODE_ENV === 'production') {
     return err;
@@ -9,6 +25,14 @@ function getErrorMessage(err) {
 
 export function handleError(err, req, res, next) {
   let errorMessage, errorCode;
+
+  if (err instanceof PermissionDeniedError) {
+    return res.status(err.statusCode).send({
+      errorMessage: err.message,
+      errorCode: 'PermissionDeniedError',
+      errorData: err.data,
+    });
+  }
 
   if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
     errorCode = 'NotFoundError';

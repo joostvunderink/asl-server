@@ -58,8 +58,14 @@ describe('GET request with valid credentials but no permissions', () => {
         expect('we should not').to.equal('end up here');
       })
       .catch(err => {
-        // TODO: Should be 401!
-        expect(err.status).to.equal(500);
+        expect(err.status).to.equal(401);
+        const errObj = JSON.parse(err.response.error.text);
+        expect(errObj).to.deep.equal({
+          'errorMessage': 'Permission denied for region:read',
+          'errorCode':    'PermissionDeniedError',
+          'errorData':    {'model':'region','operation':'read'},
+        });
+
         // expect(res.body).to.be.an('array');
       });
   });
