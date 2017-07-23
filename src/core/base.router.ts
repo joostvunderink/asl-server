@@ -1,9 +1,5 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, AslRequest, Response, NextFunction } from './express.types';
 import { can } from './permission';
-
-interface AslRequest extends Request {
-  user: any;
-}
 
 export default class BaseRouter {
   router: Router;
@@ -141,7 +137,7 @@ export default class BaseRouter {
       // sure that 'this' is available in the methods.
       // After all, express has no idea that the router function is actually
       // an instance method.
-      return function(req: Request, res: Response, next: NextFunction) {
+      return function(req: AslRequest, res: Response, next: NextFunction) {
         return self[fname](req, res, next);
       }
     }
