@@ -4,6 +4,8 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import getRouteConfig from './routes';
 import { initOauth } from './oauth/routes';
+import { handleError } from './error';
+
 const oauthServer = require('oauth2-server');
 
 let app = express();
@@ -62,21 +64,6 @@ for (let m in routeConfig) {
   app.use('/api/v1/' + m, routeConfig[m]);
 }
 
-app.use(function (err, req, res, next) {
-  let errorMessage, errorCode;
-  if (err.name === 'OAuth2Error') {
-    errorCode = 'ERR_AUTH';
-    if (process.env.NODE_ENV === 'production') {
-      errorMessage = err;
-    }
-    else {
-      errorMessage = err.stack;
-    }
-    return res.status(err.code || 500).send({ code: errorCode, message: errorMessage });
-  }
-
-  console.log('Unknown error. Name: %s, Code: %s, err: %s', err.name, err.code, err);
-  res.status(500).send('Unknown error.');
-});
+app.use(handleError);
 
 export default app;

@@ -28,7 +28,7 @@ export default class BaseRouter {
       }
     }
     
-    can(req.user.roleIds, this.controller.model.tableName, 'read')
+    return can(req.user.roleIds, this.controller.model.tableName, 'read')
     .then(() => {
       return this.controller.getAll({ filter: filter });
     })
@@ -36,11 +36,8 @@ export default class BaseRouter {
       res.status(200).send(ret);
     })
     .catch(err => {
-      console.error(err);
-      res.status(500).send({
-        error: err.message ? err.message : err.toString()
-      });
-     });;
+      next(err);
+    });
   }
 
   public getOne(req: AslRequest, res: Response, next: NextFunction) {
@@ -57,29 +54,20 @@ export default class BaseRouter {
       }
     }
 
-    can(req.user.roleIds, this.controller.model.tableName, 'read')
+    return can(req.user.roleIds, this.controller.model.tableName, 'read')
     .then(() => {
       return this.controller.getOne({ id: req.params.id, filter: filter });
     })
     .then(ret => {
       res.status(200).send(ret);
-     })
+    })
     .catch(err => {
-      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
-        res.status(404).send();
-      }
-      else if (err.name.endsWith('NotFoundError')) {
-        res.status(404).send();
-      }
-      else {
-        console.error(err);
-        res.status(500).send(err);
-      }
+      next(err);
     });
   }
 
   public create(req: AslRequest, res: Response, next: NextFunction) {
-    can(req.user.roleIds, this.controller.model.tableName, 'create')
+    return can(req.user.roleIds, this.controller.model.tableName, 'create')
     .then(() => {
       return this.controller.create(req.body)
     })
@@ -88,24 +76,12 @@ export default class BaseRouter {
       res.status(201).send(createdEntity);
     })
     .catch(err => {
-      if (err.code && err.code.startsWith('ER_')) {
-        res.status(400).send({
-          code: err.code,
-          message: err.message,
-        });
-      } else if (err.name === 'ValidationError') {
-        res.status(400).send({
-          code: err.name,
-          message: err.message,
-        });
-      } else {
-        res.status(500).send(err);
-      }
+      next(err);
     });
   }
 
   public update(req: AslRequest, res: Response, next: NextFunction) {
-    can(req.user.roleIds, this.controller.model.tableName, 'update')
+    return can(req.user.roleIds, this.controller.model.tableName, 'update')
     .then(() => {
       return this.controller.update(req.params.id, req.body);
     })
@@ -113,21 +89,12 @@ export default class BaseRouter {
       res.status(200).send(updatedEntity);
     })
     .catch(err => {
-      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
-        res.status(404).send();
-      }
-      else if (err.name.endsWith('NotFoundError')) {
-        res.status(404).send();
-      }
-      else {
-        console.error(err);
-        res.status(500).send(err);
-      }
+      next(err);
     });
   }
 
   public deleteOne(req: AslRequest, res: Response, next: NextFunction) {
-    can(req.user.roleIds, this.controller.model.tableName, 'delete')
+    return can(req.user.roleIds, this.controller.model.tableName, 'delete')
     .then(() => {
       return this.controller.delete(req.params.id);
     })
@@ -135,15 +102,7 @@ export default class BaseRouter {
       res.status(204).send();
     })
     .catch(err => {
-      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
-        res.status(404).send();
-      }
-      else if (err.name.endsWith('NotFoundError')) {
-        res.status(404).send();
-      }
-      else {
-        res.status(500).send(err);
-      }
+      next(err);
     });
   }
 
@@ -161,7 +120,7 @@ export default class BaseRouter {
       }
     }
 
-    can(req.user.roleIds, this.controller.model.tableName, 'read')
+    return can(req.user.roleIds, this.controller.model.tableName, 'read')
     .then(() => {
       return this.controller.count({ where: where });
     })
@@ -169,15 +128,7 @@ export default class BaseRouter {
       res.status(200).send({ count: numRows });
     })
     .catch(err => {
-      if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
-        res.status(404).send();
-      }
-      else if (err.name.endsWith('NotFoundError')) {
-        res.status(404).send();
-      }
-      else {
-        res.status(500).send(err);
-      }
+      next(err);
     });
   }
 
