@@ -65,8 +65,6 @@ describe('GET request with valid credentials but no permissions', () => {
           'errorCode':    'PermissionDeniedError',
           'errorData':    {'model':'region','operation':'read'},
         });
-
-        // expect(res.body).to.be.an('array');
       });
   });
 });

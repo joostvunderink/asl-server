@@ -1,4 +1,5 @@
 export class PermissionDeniedError extends Error {
+  name: string;
   statusCode: number;
   message: string;
   data: any;
@@ -9,6 +10,7 @@ export class PermissionDeniedError extends Error {
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, PermissionDeniedError.prototype);
+    this.name = this.constructor.name;
     this.statusCode = statusCode || 401;
     this.data = data || {};
   }
@@ -26,12 +28,18 @@ function getErrorMessage(err) {
 export function handleError(err, req, res, next) {
   let errorMessage, errorCode;
 
-  if (err instanceof PermissionDeniedError) {
-    return res.status(err.statusCode).send({
-      errorMessage: err.message,
-      errorCode: 'PermissionDeniedError',
-      errorData: err.data,
-    });
+  const knownErrors = [
+    PermissionDeniedError,
+  ];
+
+  for (let i = 0; i < knownErrors.length; i++) {
+    if (err instanceof knownErrors[i]) {
+      return res.status(err.statusCode).send({
+        errorMessage: err.message,
+        errorCode: err.name,
+        errorData: err.data,
+      });
+    }
   }
 
   if (err.name === 'CustomError' && err.message === 'EmptyResponse') {
@@ -64,5 +72,18 @@ export function handleError(err, req, res, next) {
   }
 
   console.log('Unknown error. Name: %s, Code: %s, err: %s', err.name, err.code, err);
-  res.status(500).send('Unknown error.');
+  let body: any = {
+    errorMessage: 'Unknown error',
+    errorCode: err.name,
+    errorData: {
+      data: err.data,
+      name: err.name,
+      code: err.code,
+      message: err.message,
+    },
+  };
+  if (process.env.NODE_ENV !== 'production') {
+    body.errorStack = err.stack;
+  }
+  res.status(500).send(body);
 }
