@@ -16,6 +16,24 @@ export class PermissionDeniedError extends Error {
   }
 }
 
+export class ParseError extends Error {
+  name: string;
+  statusCode: number;
+  message: string;
+  data: any;
+
+  constructor(options) {
+    const { message, statusCode, data } = options;
+    super(message);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, ParseError.prototype);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode || 400;
+    this.data = data || {};
+  }
+}
+
 function getErrorMessage(err) {
   if (process.env.NODE_ENV === 'production') {
     return err;
@@ -30,6 +48,7 @@ export function handleError(err, req, res, next) {
 
   const knownErrors = [
     PermissionDeniedError,
+    ParseError,
   ];
 
   for (let i = 0; i < knownErrors.length; i++) {

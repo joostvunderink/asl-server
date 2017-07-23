@@ -1,5 +1,23 @@
 import { Router, AslRequest, Response, NextFunction } from './express.types';
 import { can } from './permission';
+import { ParseError } from '../error';
+
+function parseFilter(req: AslRequest): Promise<any> {
+  if (!req.query.filter) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(JSON.parse(req.query.filter));
+    }
+    catch (e) {
+      reject(new ParseError({
+        message: 'Error parsing "filter" parameter: ' + e,
+      }));
+    }
+  })
+}
 
 export default class BaseRouter {
   router: Router;
@@ -12,19 +30,12 @@ export default class BaseRouter {
 
   getAll(req: AslRequest, res: Response, next: NextFunction) {
     let filter;
-    if (req.query.filter) {
-      try {
-        filter = JSON.parse(req.query.filter);
-      }
-      catch (e) {
-        return res.status(400).send({
-          code: 'JsonParseError',
-          message: 'Error parsing "filter" parameter: ' + e,
-        });
-      }
-    }
-    
-    return can({ user: req.user, model: this.controller.model.tableName, operation: 'read' })
+
+    return parseFilter(req)
+    .then((f) => {
+      filter = f;
+      return can({ user: req.user, model: this.controller.model.tableName, operation: 'read' })
+    })
     .then(() => {
       return this.controller.getAll({ filter: filter });
     })
