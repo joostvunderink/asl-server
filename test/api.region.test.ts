@@ -64,7 +64,7 @@ describe('regions endpoint', () => {
   describe('POST region', () => {
     it('responds with created region object', () => {
       return chapp.post('/api/v1/regions')
-        .send({ name: 'Zuid 1', description: 'West South part of NL' })
+        .send({ name: 'Zuid 1', description: 'West South part of NL', country_id: 3, sport_id: 3 })
         .then(res => {
           expect(res.status).to.equal(201);
           expect(res).to.be.json;
@@ -79,6 +79,9 @@ describe('regions endpoint', () => {
           ]);
           expect(obj.name).to.equal('Zuid 1');
           expect(obj.description).to.equal('West South part of NL');
+        })
+        .catch(err => {
+          console.error(err);
         });
     });
   });
@@ -114,7 +117,7 @@ describe('regions endpoint', () => {
       let regionId;
       // Create a new region
       return chapp.post('/api/v1/regions')
-        .send({ description: 'To Be Deleted', name: 'tbd' })
+        .send({ description: 'To Be Deleted', name: 'tbd', country_id: 1, sport_id: 1 })
         .then(res => {
           expect(res.status).to.equal(201);
           expect(res).to.be.json;

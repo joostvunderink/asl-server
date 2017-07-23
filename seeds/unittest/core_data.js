@@ -9,6 +9,7 @@ const data = [
     rows: [
       { id: 1, code: 'nl', name: 'The Netherlands'},
       { id: 2, code: 'pl', name: 'Poland'},
+      { id: 3, code: 'se', name: 'Sweden'},
     ]
   },
   {
@@ -16,6 +17,7 @@ const data = [
     rows: [
       { id: 1, description: 'Football, not soccer', name: 'football' },
       { id: 2, description: 'Basketball', name: 'basketball' },
+      { id: 3, description: 'Ski Jumping', name: 'ski jumping' },
     ]
   },
   {
