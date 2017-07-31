@@ -92,7 +92,7 @@ describe('countries endpoint', () => {
           const createdAt = (new Date(be.created_at)).getTime();
           const updatedAt = (new Date(be.updated_at)).getTime();
           expect(updatedAt).to.be.above(createdAt);
-        });
+        }).catch(console.error);
     });
   });
 

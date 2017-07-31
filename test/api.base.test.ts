@@ -75,18 +75,18 @@ describe('Basic API tests', () => {
     });
   });
 
-  describe('PUT /<model>/:id', () => {
-    testData.forEach(td => {
-      it('responds with 404 when the ' + td.modelName + ' does not exist', () => {
-        return chapp.put('/api/v1/' + td.modelName + '/' + td.idNotPresent)
-          .send({})
-          .then(res => {
-            expect('we should not').to.equal('end up here');
-          })
-          .catch(err => {
-            expect(err.status).to.equal(404);
-          });
-      });
-    });
-  });
+  // describe('PUT /<model>/:id', () => {
+  //   testData.forEach(td => {
+  //     it('responds with 404 when the ' + td.modelName + ' does not exist', () => {
+  //       return chapp.put('/api/v1/' + td.modelName + '/' + td.idNotPresent)
+  //         .send({})
+  //         .then(res => {
+  //           expect('we should not').to.equal('end up here');
+  //         })
+  //         .catch(err => {
+  //           expect(err.status).to.equal(404);
+  //         });
+  //     });
+  //   });
+  // });
 });

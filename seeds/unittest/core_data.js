@@ -10,6 +10,7 @@ const data = [
       { id: 1, code: 'nl', name: 'The Netherlands'},
       { id: 2, code: 'pl', name: 'Poland'},
       { id: 3, code: 'se', name: 'Sweden'},
+      { id: 4242, code: 'ut', name: 'Country for update tests' },
     ]
   },
   {

@@ -1,17 +1,29 @@
 const Joi = require('joi');
 
 export class SportValidator {
-  schema;
+  schemaForInsert;
+  schemaForUpdate;
 
   constructor() {
-    this.schema = Joi.object().keys({
-      name: Joi.string().min(1).required(),
-      description: Joi.string(),
-    });
+    let baseSchema = {
+      name       : Joi.string().min(4),
+      description: Joi.string().min(1),
+    };
+
+    this.schemaForUpdate = Joi.object().keys(Object.assign({}, baseSchema));
+
+    this.schemaForInsert = Joi.object().keys(Object.assign({}, {
+      name       : baseSchema.name.required(),
+      description: baseSchema.description.required(),
+    }));
   }
 
-  validate(data) {
-    return Joi.validate(data, this.schema);
+  validateForInsert(data) {
+    return Joi.validate(data, this.schemaForInsert);
+  }
+
+  validateForUpdate(data) {
+    return Joi.validate(data, this.schemaForUpdate);
   }
 }
 

@@ -95,7 +95,7 @@ describe('sports endpoint', () => {
       let sportId;
       // Create a new sport
       return chapp.post('/api/v1/sports')
-        .send({ description: 'To Be Deleted', name: 'tbd' })
+        .send({ description: 'To Be Deleted', name: 'sport name' })
         .then(res => {
           expect(res.status).to.equal(201);
           expect(res).to.be.json;

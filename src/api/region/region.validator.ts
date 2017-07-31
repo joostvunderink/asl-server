@@ -1,19 +1,33 @@
 const Joi = require('joi');
 
 export class RegionValidator {
-  schema;
+  schemaForInsert;
+  schemaForUpdate;
 
   constructor() {
-    this.schema = Joi.object().keys({
-      name       : Joi.string().min(1).required(),
+    let baseSchema = {
+      name       : Joi.string().min(1),
       description: Joi.string(),
-      country_id : Joi.number().integer().min(1).required(),
-      sport_id   : Joi.number().integer().min(1).required(),
-    });
+      country_id : Joi.number().integer().min(1),
+      sport_id   : Joi.number().integer().min(1),
+    };
+
+    this.schemaForUpdate = Joi.object().keys(Object.assign({}, baseSchema));
+
+    this.schemaForInsert = Joi.object().keys(Object.assign({}, {
+      name       : baseSchema.name.required(),
+      description: baseSchema.description,
+      country_id : baseSchema.country_id.required(),
+      sport_id   : baseSchema.sport_id.required(),
+    }));
   }
 
-  validate(data) {
-    return Joi.validate(data, this.schema);
+  validateForInsert(data) {
+    return Joi.validate(data, this.schemaForInsert);
+  }
+
+  validateForUpdate(data) {
+    return Joi.validate(data, this.schemaForUpdate);
   }
 }
 

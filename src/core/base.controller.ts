@@ -62,9 +62,8 @@ export default class BaseController {
   }
 
   public create(data) {
-    let validatedData;
     if (this.validator) {
-      let { error, validatedData } = this.validator.validate(data);
+      let { error, validatedData } = this.validator.validateForInsert(data);
 
       if (error) {
         return Promise.reject(error);
@@ -77,6 +76,13 @@ export default class BaseController {
   }
 
   public update(id, data) {
+    if (this.validator) {
+      let { error, validatedData } = this.validator.validateForUpdate(data);
+
+      if (error) {
+        return Promise.reject(error);
+      }
+    }
     return this.getOne({ id: id })
     .then((foundObj) => {
       for (const key in data) {
