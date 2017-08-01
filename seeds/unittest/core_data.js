@@ -19,6 +19,7 @@ const data = [
       { id: 1, description: 'Football, not soccer', name: 'football' },
       { id: 2, description: 'Basketball', name: 'basketball' },
       { id: 3, description: 'Ski Jumping', name: 'ski jumping' },
+      { id: 4242, description: 'Some description', name: 'Sport for update tests' },
     ]
   },
   {
@@ -28,6 +29,7 @@ const data = [
         { id: 2, country_id: 1, sport_id: 1, name: 'West 2', description: 'South-West part of NL for football' },
         { id: 3, country_id: 1, sport_id: 2, name: 'East', description: 'East part of NL for basketball' },
         { id: 4, country_id: 2, sport_id: 1, name: 'NW', description: 'North-West part of BE for football' },
+        { id: 4242, country_id: 2, sport_id: 2, name: 'Region for update tests', description: 'Some description' },
     ]
   },
   {

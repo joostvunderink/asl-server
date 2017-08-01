@@ -1,10 +1,9 @@
+import { createValidationTestData } from '../../helper/validation';
+
 const validCreateInputs = [
   {
     name: 'Single country - Monaco',
-    data: {
-      code: 'mo',
-      name: 'Monaco',
-    }
+    data: { code: 'mo', name: 'Monaco' }
   },
 ];
 
@@ -42,15 +41,11 @@ const invalidCreateInputs = [
 const validUpdateInputs = [
   {
     name: 'Update the name',
-    data: {
-      name: 'Changed name',
-    }
+    data: { name: 'Changed name' }
   },
   {
     name: 'Update the code',
-    data: {
-      code: 'ux',
-    }
+    data: { code: 'ux' }
   },
 ];
 
@@ -85,7 +80,7 @@ const invalidUpdateInputs = [
   },
 ];
 
-export const testData = createTestData({
+export const testData = createValidationTestData({
   route              : 'countries',
   validCreateInputs  : validCreateInputs,
   validUpdateInputs  : validUpdateInputs,
@@ -94,106 +89,3 @@ export const testData = createTestData({
   existingObjectId   : 1,
   updateObjectId     : 4242,
 });
-
-function createTestData({
-  route, existingObjectId, updateObjectId,
-  validCreateInputs, invalidCreateInputs,
-  validUpdateInputs, invalidUpdateInputs,
-}) {
-  let testData = {
-    route: route,
-    okTests: [],
-    errorTests: []
-  };
-
-  // Create POST test for creating objects with valid input
-  validCreateInputs.forEach(vi => {
-    testData.okTests.push({
-      name: vi.name,
-      before: [],
-      input: {
-        method: 'post',
-        data: vi.data,
-      },
-      verify: {
-        statusCode: 201,
-        body: vi.data,
-      },
-    });
-  });
-
-  // Create POST test for creating objects with valid input
-  validUpdateInputs.forEach(vi => {
-    testData.okTests.push({
-      name: vi.name,
-      before: [],
-      input: {
-        method: 'put',
-        route: 'countries/' + updateObjectId,
-        data: vi.data,
-      },
-      verify: {
-        statusCode: 200,
-        body: vi.data,
-      },
-    });
-    console.log(testData.okTests);
-  });
-
-  // Create POST test for creating objects with invalid input
-  invalidCreateInputs.forEach(ii => {
-    let input = Object.assign({}, validCreateInputs[0].data);
-    for (const key in ii.data) {
-      const val = ii.data[key];
-      if (val === undefined) {
-        delete input[key];
-      }
-      else {
-        input[key] = val;
-      }
-    }
-
-    testData.errorTests.push({
-      name: ii.name,
-      before: [],
-      input: {
-        method: 'post',
-        data: input,
-      },
-      verify: {
-        statusCode: 400,
-        errorCode: 'ValidationError',
-      },
-    });
-  });
-
-  // Create PUT test for updating objects with invalid input
-  invalidUpdateInputs.forEach(ii => {
-    let input = Object.assign({}, validUpdateInputs[0].data);
-    for (const key in ii.data) {
-      const val = ii.data[key];
-      if (val === undefined) {
-        delete input[key];
-      }
-      else {
-        input[key] = val;
-      }
-    }
-
-    testData.errorTests.push({
-      name: ii.name,
-      before: [],
-      input: {
-        method: 'put',
-        route: route + '/' + existingObjectId,
-        data: input,
-      },
-      verify: {
-        statusCode: 400,
-        errorCode: 'ValidationError',
-      },
-    });
-  });
-
-  return testData;
-}
