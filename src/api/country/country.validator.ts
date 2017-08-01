@@ -1,29 +1,21 @@
 const Joi = require('joi');
+import BaseValidator from '../../core/base.validator';
 
-export class CountryValidator {
-  schemaForInsert;
-  schemaForUpdate;
+export class CountryValidator extends BaseValidator {
 
   constructor() {
-    let baseSchema = {
+    super();
+    this.baseSchema = {
       name: Joi.string().min(4),
       code: Joi.string().regex(/^[a-z]{2}$/),
     };
 
-    this.schemaForUpdate = Joi.object().keys(Object.assign({}, baseSchema));
+    this.schemaForUpdate = Joi.object().keys(Object.assign({}, this.baseSchema));
 
     this.schemaForInsert = Joi.object().keys(Object.assign({}, {
-      name: baseSchema.name.required(),
-      code: baseSchema.code.required(),
+      name: this.baseSchema.name.required(),
+      code: this.baseSchema.code.required(),
     }));
-  }
-
-  validateForInsert(data) {
-    return Joi.validate(data, this.schemaForInsert);
-  }
-
-  validateForUpdate(data) {
-    return Joi.validate(data, this.schemaForUpdate);
   }
 }
 

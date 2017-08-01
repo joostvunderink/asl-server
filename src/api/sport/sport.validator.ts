@@ -1,29 +1,20 @@
 const Joi = require('joi');
+import BaseValidator from '../../core/base.validator';
 
-export class SportValidator {
-  schemaForInsert;
-  schemaForUpdate;
-
+export class SportValidator extends BaseValidator{
   constructor() {
-    let baseSchema = {
+    super();
+    this.baseSchema = {
       name       : Joi.string().min(4),
       description: Joi.string().min(1),
     };
 
-    this.schemaForUpdate = Joi.object().keys(Object.assign({}, baseSchema));
+    this.schemaForUpdate = Joi.object().keys(Object.assign({}, this.baseSchema));
 
     this.schemaForInsert = Joi.object().keys(Object.assign({}, {
-      name       : baseSchema.name.required(),
-      description: baseSchema.description.required(),
+      name       : this.baseSchema.name.required(),
+      description: this.baseSchema.description.required(),
     }));
-  }
-
-  validateForInsert(data) {
-    return Joi.validate(data, this.schemaForInsert);
-  }
-
-  validateForUpdate(data) {
-    return Joi.validate(data, this.schemaForUpdate);
   }
 }
 
