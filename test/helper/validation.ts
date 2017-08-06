@@ -40,7 +40,6 @@ export function createValidationTestData({
         body: vi.data,
       },
     });
-    console.log(testData.okTests);
   });
 
   // Create POST test for creating objects with invalid input
