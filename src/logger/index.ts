@@ -2,7 +2,7 @@
 
 const bunyan = require('bunyan');
 
-const loglevel = process.env.LOGLEVEL ? process.env.LOGLEVEL : 'DEBUG';
+const loglevel = process.env.LOGLEVEL || 'DEBUG';
 
 function reqSerializer(req) {
   return {

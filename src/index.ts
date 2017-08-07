@@ -10,7 +10,7 @@ const port = normalizePort(process.env.PORT || 3275);
 app.set('port', port);
 
 const server = http.createServer(app);
-console.log('Starting server on port %s.', port);
+logger.info({ port: port }, 'Starting server');
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -43,5 +43,5 @@ function onListening(): void {
   let addr = server.address();
   let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
-  logger.info({ port: port }, 'Server is listening.');
+  logger.info({ port: port }, 'Server is running.');
 }

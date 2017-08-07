@@ -1,11 +1,16 @@
 import { config } from '../config';
+import logger from '../logger';
 
 import * as _ from 'lodash';
 import * as client from 'knex';
 import * as bs from 'bookshelf';
 
 if (config.db.client === 'mysql') {
-  console.log('Database connecting to %s at %s', config.db.connection.database, config.db.connection.host);
+  logger.info({
+    db_name: config.db.connection.database,
+    db_host: config.db.connection.host,
+    db_user: config.db.connection.user,
+  }, 'Database config');
 }
 
 export const defaultTableDef = { hidden: ['deleted_at'] };

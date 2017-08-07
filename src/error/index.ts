@@ -1,3 +1,5 @@
+import logger from '../logger';
+
 export class PermissionDeniedError extends Error {
   name: string;
   statusCode: number;
@@ -90,7 +92,7 @@ export function handleError(err, req, res, next) {
     return res.status(404).send();
   }
 
-  console.log('Unknown error. Name: %s, Code: %s, err: %s', err.name, err.code, err);
+  logger.error({ name: err.name, code: err.code, error: err }, 'Unknown error.');
   let body: any = {
     errorMessage: 'Unknown error',
     errorCode: err.name,

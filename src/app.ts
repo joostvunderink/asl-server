@@ -1,14 +1,30 @@
 import * as path from 'path';
 import * as express from 'express';
-import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
+import * as uuid from 'uuid';
 import getRouteConfig from './routes';
 import { initOauth } from './oauth/routes';
 import { handleError } from './error';
+import logger from './logger';
+import { Router, AslRequest, Response, NextFunction } from './core/express.types';
 
 const oauthServer = require('oauth2-server');
 
 let app = express();
+
+app.use((req: AslRequest, res: Response, next: NextFunction) => {
+  req.___startTime = new Date();
+  next();
+});
+
+app.use((req: AslRequest, res: Response, next: NextFunction) => {
+  req.logger = logger.child({ request_id: uuid.v4() });
+  req.logger.debug({
+    url: req.url,
+    path: req.path,
+  }, 'Incoming request');
+  next();
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,7 +35,7 @@ const os = oauthServer({
   accessTokenLifetime: 7 * 86400, // one week
 });
 
-function checkAuthentication(req, res, next) {
+function checkAuthentication(req: AslRequest, res: Response, next: NextFunction) {
   if (process.env.NODE_ENV === 'unittest' && app.locals.authenticationDisabled) {
     req.user = {
       email: 'test@user',
@@ -41,7 +57,7 @@ function checkAuthentication(req, res, next) {
   os.authorise()(req, res, next);
 }
 
-function checkAuthorisation(req, res, next) {
+function checkAuthorisation(req: AslRequest, res: Response, next: NextFunction) {
   // Here, req.user contains:
   // user.roles = ['admin', 'user', ...]
   // user.permissions = ...?? data structure to be determined
@@ -55,7 +71,7 @@ app.post('/oauth/token', os.grant());
 app.use(checkAuthentication);
 app.use(checkAuthorisation);
 
-app.get('/meta/ping', (req, res) => {
+app.get('/meta/ping', (req: AslRequest, res: Response) => {
   res.send({ pong: 'Pong!' });
 });
 
@@ -65,5 +81,19 @@ for (let m in routeConfig) {
 }
 
 app.use(handleError);
+
+app.use((req: AslRequest, res: Response, next: NextFunction) => {
+  res.on('finish', () => {
+    const endTime = new Date();
+    const diff = endTime.getTime() - req.___startTime.getTime();
+    req.logger.debug({
+      duration: diff,
+      statusCode: res.statusCode,
+      method: req.method,
+      url: req.originalUrl
+    }, 'Request duration');
+  });
+  next();
+});
 
 export default app;
