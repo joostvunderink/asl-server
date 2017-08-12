@@ -1,6 +1,8 @@
 const xlsx = require('xlsx');
 import logger from '../logger';
 import * as moment from 'moment';
+import * as fs from 'fs';
+import * as request from 'request-promise';
 
 const clogger = logger.child({ section: 'import' });
 
@@ -237,7 +239,35 @@ async function findOrCreateCompetitionMatches(args) {
   return competitionMatches;
 }
 
-export async function importCompetition(filename) {
+export async function importCompetition(args) {
+  let { sport, country, url } = args;
+
+  logger.debug('Importing competition')
+  let tmpFilename = '/tmp/competition.import.tmp.' + process.pid + '.xlsx';
+
+  if (sport === 'football' && country === 'nl') {
+    logger.debug({ url }, 'Downloading competition document to import')
+    return request.get({
+      url: url,
+      encoding: null,
+    })
+    .then(res => {
+      logger.debug({ tmpFilename, len: res.length }, 'Writing data to temp file');
+      const buffer = Buffer.from(res, 'utf8');
+      fs.writeFileSync(tmpFilename, buffer);
+      return importCompetitionNlFootball(tmpFilename);
+    })
+    .catch(err => {
+      logger.error(err);
+      return Promise.reject(err);
+    });
+  }
+  else {
+    return Promise.resolve();
+  }
+}
+
+export async function importCompetitionNlFootball(filename) {
   clogger.debug({ filename }, 'Importing competition');
   // let workbook = xlsx.readFile(filename, { cellDates: true });
   let workbook   = xlsx.readFile(filename, { cellDates: false });

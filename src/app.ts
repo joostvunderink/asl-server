@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as uuid from 'uuid';
 import getRouteConfig from './routes/api';
+import { addImportRoutes } from './routes/import';
 import { initOauth } from './oauth/routes';
 import { handleError } from './error';
 import logger from './logger';
@@ -79,6 +80,8 @@ const routeConfig = getRouteConfig();
 for (let m in routeConfig) {
   app.use('/api/v1/' + m, routeConfig[m]);
 }
+
+addImportRoutes(app);
 
 app.use(handleError);
 
