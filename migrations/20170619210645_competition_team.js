@@ -2,8 +2,9 @@ exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('competition_team', function (table) {
     table.increments();
 
+    table.string('name');
     table.integer('competition_id').unsigned().references('id').inTable('competition');
-    table.integer('team_id').unsigned().references('id').inTable('team');
+    table.integer('club_id').unsigned().references('id').inTable('club');
 
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());

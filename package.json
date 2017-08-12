@@ -31,6 +31,7 @@
     "joi": "10.6.0",
     "knex": "0.12.0",
     "knex-filter-loopback": "0.1.0",
+    "moment": "2.18.1",
     "morgan": "1.7.0",
     "mysql": "2.13.0",
     "nodemon": "1.11.0",
@@ -38,7 +39,8 @@
     "pm2": "2.5.0",
     "serve-favicon": "2.4.2",
     "typescript": "2.3.4",
-    "uuid": "3.1.0"
+    "uuid": "3.1.0",
+    "xlsx": "0.11.1"
   },
   "devDependencies": {
     "@types/body-parser": "0.0.33",

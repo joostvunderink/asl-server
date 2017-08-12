@@ -4,6 +4,8 @@ import * as debug from 'debug';
 import app from './app';
 import logger from './logger';
 
+import { importCompetition } from './import/competition';
+
 debug('ts-express:server');
 
 const port = normalizePort(process.env.PORT || 3275);
@@ -44,4 +46,6 @@ function onListening(): void {
   let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
   logger.info({ port: port }, 'Server is running.');
+
+  // importCompetition('/Users/jvunder/src/asl-server/doc/competition-import-example-football-nl.xlsx');
 }

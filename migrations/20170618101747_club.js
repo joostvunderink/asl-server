@@ -6,6 +6,7 @@ exports.up = function(knex) {
     table.string('city');
 
     table.integer('country_id').unsigned().references('id').inTable('country');
+    table.integer('sport_id').unsigned().references('id').inTable('sport');
     
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());
