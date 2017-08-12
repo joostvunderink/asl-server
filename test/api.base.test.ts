@@ -1,7 +1,7 @@
 import * as mocha from 'mocha';
 import { chapp, app, expect, authedReq, disableAuth, enableAuth } from './helper';
 
-import getRouteConfig from '../src/routes';
+import getRouteConfig from '../src/routes/api';
 
 const routeConfig = getRouteConfig();
 

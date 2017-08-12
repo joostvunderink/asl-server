@@ -1,5 +1,5 @@
 import * as mocha from 'mocha';
-import getRouteConfig from '../src/routes';
+import getRouteConfig from '../src/routes/api';
 import { chapp, app, expect, authedReq, adminAuthHeader } from './helper';
 
 describe('GET request with valid credentials and permissions', () => {

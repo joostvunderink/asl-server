@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as uuid from 'uuid';
-import getRouteConfig from './routes';
+import getRouteConfig from './routes/api';
 import { initOauth } from './oauth/routes';
 import { handleError } from './error';
 import logger from './logger';
