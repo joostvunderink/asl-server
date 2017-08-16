@@ -18,7 +18,7 @@ describe('Integrity', () => {
   testData.forEach(td => {
     // Verify that it's not possible to insert
     td.duplicateCreateTests && td.duplicateCreateTests.forEach(input => {
-      it.only(td.route + ': errors for invalid input - ' + input.name, () => {
+      it(td.route + ': errors for invalid input - ' + input.name, () => {
         return chapp.post('/api/v1/' + td.route)
           .send(input.init)
           .then(res => {
