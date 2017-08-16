@@ -1,6 +1,6 @@
 import logger from '../logger';
 
-export class PermissionDeniedError extends Error {
+export class AslError extends Error {
   name: string;
   statusCode: number;
   message: string;
@@ -11,26 +11,41 @@ export class PermissionDeniedError extends Error {
     super(message);
 
     // Set the prototype explicitly.
-    Object.setPrototypeOf(this, PermissionDeniedError.prototype);
     this.name = this.constructor.name;
+  }
+}
+
+export class PermissionDeniedError extends AslError {
+  constructor(options) {
+    const { message, statusCode, data } = options;
+    super(options);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, PermissionDeniedError.prototype);
     this.statusCode = statusCode || 401;
     this.data = data || {};
   }
 }
 
-export class ParseError extends Error {
-  name: string;
-  statusCode: number;
-  message: string;
-  data: any;
-
+export class ParseError extends AslError {
   constructor(options) {
     const { message, statusCode, data } = options;
-    super(message);
+    super(options);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, ParseError.prototype);
-    this.name = this.constructor.name;
+    this.statusCode = statusCode || 400;
+    this.data = data || {};
+  }
+}
+
+export class InvalidInputError extends AslError {
+  constructor(options) {
+    const { message, statusCode, data } = options;
+    super(options);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, ParseError.prototype);
     this.statusCode = statusCode || 400;
     this.data = data || {};
   }

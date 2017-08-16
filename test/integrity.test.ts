@@ -33,8 +33,6 @@ describe('Integrity', () => {
             const errObj = JSON.parse(err.response.error.text);
             expect(errObj).to.have.all.keys(['code', 'message']);
             expect(errObj.code).to.equal('ER_DUP_ENTRY');
-            // expect(errObj.message).to.contain('GERM');
-            // expect(errObj.message).to.contain('code');
           });
       });
     });
@@ -57,11 +55,9 @@ describe('Integrity', () => {
           expect(err.status).to.equal(400);
           // TODO: Figure out if this is really the best way to get the error text.
           const errObj = JSON.parse(err.response.error.text);
-          expect(errObj).to.have.all.keys(['code', 'message']);
-          console.log(errObj);
-          // expect(errObj.code).to.equal('ER_DUP_ENTRY');
-          // expect(errObj.message).to.contain('GERM');
-          // expect(errObj.message).to.contain('code');
+          expect(errObj).to.have.all.keys(['errorCode', 'errorMessage', 'errorData']);
+          expect(errObj.errorCode).to.equal('InvalidInputError');
+          expect(errObj.errorMessage).to.contain('contains a reference');
         });
       });
     });

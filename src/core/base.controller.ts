@@ -1,3 +1,6 @@
+import logger from '../logger';
+import { InvalidInputError } from '../error';
+
 const whereFilter = require('knex-filter-loopback').whereFilter;
 
 export default class BaseController {
@@ -72,6 +75,26 @@ export default class BaseController {
     return new this.model(data).save()
     .then((savedObj) => {
       return this.getOne({ id: savedObj.id });
+    })
+    .catch(err => {
+      if (err.code === 'ER_NO_REFERENCED_ROW_2') {
+        const m = err.message.match(/FOREIGN KEY \(`([^`]+)`\) REFERENCES `([^`]+)`/);
+        if (m) {
+          const fieldName = m[1];
+          const tableName = m[2];
+          throw new InvalidInputError({
+            message: 'Field "' + fieldName + '" contains a reference to object ' +
+                     tableName + ':' + data[fieldName] + '. This object either does not ' +
+                     'exist or you have no permission to read it.',
+            statusCode: 400,
+            data: {
+              field: fieldName,
+              value: data[fieldName],
+            }
+          })
+        }
+      }
+      throw err;
     });
   }
 
