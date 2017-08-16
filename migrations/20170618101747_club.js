@@ -3,6 +3,9 @@ exports.up = function(knex) {
     table.increments();
     table.string('name');
     table.string('description');
+    table.string('park_name');
+    table.string('address');
+    table.string('postal_code');
     table.string('city');
 
     table.integer('country_id').unsigned().references('id').inTable('country');
