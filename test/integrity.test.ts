@@ -18,7 +18,7 @@ describe('Integrity', () => {
   testData.forEach(td => {
     // Verify that it's not possible to insert
     td.duplicateCreateTests && td.duplicateCreateTests.forEach(input => {
-      it(td.route + ': errors for invalid input - ' + input.name, () => {
+      it.only(td.route + ': errors for invalid input - ' + input.name, () => {
         return chapp.post('/api/v1/' + td.route)
           .send(input.init)
           .then(res => {
@@ -31,8 +31,9 @@ describe('Integrity', () => {
             expect(err.status).to.equal(400);
             // TODO: Figure out if this is really the best way to get the error text.
             const errObj = JSON.parse(err.response.error.text);
-            expect(errObj).to.have.all.keys(['code', 'message']);
-            expect(errObj.code).to.equal('ER_DUP_ENTRY');
+            expect(errObj).to.have.all.keys(['errorCode', 'errorMessage', 'errorData']);
+            expect(errObj.errorCode).to.equal('InvalidInputError');
+            expect(errObj.errorMessage).to.contain('already exists');
           });
       });
     });

@@ -94,6 +94,24 @@ export default class BaseController {
           })
         }
       }
+      else if (err.code === 'ER_DUP_ENTRY') {
+        // insert into `country` (`code`, `name`) values ('xy', 'Duplication Country 1') - 
+        // ER_DUP_ENTRY: Duplicate entry 'Duplication Country 1' for key 'country_name_unique'
+        const m = err.message.match(/insert into `([^`]+)` .* ER_DUP_ENTRY: Duplicate entry '(.*)' for key/);
+        if (m) {
+          const tableName = m[1];
+          const value = m[2];
+          throw new InvalidInputError({
+            message: tableName + ' with value ' + value + 'already exists.',
+            statusCode: 400,
+            data: {
+              value: value,
+              tableName: tableName,
+            }
+          })
+        }
+        throw err;
+      }
       throw err;
     });
   }
