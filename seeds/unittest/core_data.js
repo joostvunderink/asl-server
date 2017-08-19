@@ -52,26 +52,6 @@ const data = [
     ]
   },
   {
-    table: 'team',
-    rows: [
-        { id:  1, club_id:  1, name: 'SDZ' },
-        { id:  2, club_id:  2, name: 'Ilpendam' },
-        { id:  3, club_id:  3, name: 'Purmerend FC' },
-        { id:  4, club_id:  4, name: 'IVV' },
-        { id:  5, club_id:  5, name: 'Nieuw-West United SV' },
-        { id:  6, club_id:  6, name: 'Zaandijk' },
-        { id:  7, club_id:  7, name: 'Swift' },
-        { id:  8, club_id:  8, name: 'Germaan/De Eland ASC' },
-        { id:  9, club_id:  9, name: 'Wherevogels De' },
-        { id: 10, club_id: 10, name: 'Buitenveldert SC' },
-        { id: 11, club_id: 11, name: 'RCZ' },
-        { id: 12, club_id: 12, name: 'Meteoor De' },
-        { id: 13, club_id: 13, name: 'dvc Buiksloot' },
-        { id: 14, club_id: 14, name: 'DRC' },
-        { id: 15, club_id:  1, name: 'SDZ 2' },
-    ]
-  },
-  {
     table: 'season',
     rows: [
         { id: 1, region_id: 1, name: '2016-2017',
@@ -111,6 +91,7 @@ const data = [
         { id: 12, competition_id: 2, club_id: 12, name: 'Meteoor De' },
         { id: 13, competition_id: 2, club_id: 13, name: 'dvc Buiksloot' },
         { id: 14, competition_id: 2, club_id: 14, name: 'DRC' },
+        { id: 15, competition_id: 1, club_id:  1, name: 'SDZ B-team' },
     ]
   },
   {

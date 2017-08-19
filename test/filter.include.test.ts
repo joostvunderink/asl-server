@@ -20,7 +20,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds a team with a club', () => {
-    return chapp.get('/api/v1/teams/1?filter={"include":"club"}')
+    return chapp.get('/api/v1/competition-teams/1?filter={"include":"club"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;
@@ -43,7 +43,7 @@ describe('Filter: include', () => {
       });
   });
   it('finds all teams with club included', () => {
-    return chapp.get('/api/v1/teams/?filter={"include":"club"}')
+    return chapp.get('/api/v1/competition-teams/?filter={"include":"club"}')
       .then(res => {
         expect(res.status).to.equal(200);
         expect(res).to.be.json;

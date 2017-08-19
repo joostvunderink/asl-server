@@ -16,7 +16,6 @@ import CompetitionTeam      from '../api/competition-team/competition-team.model
 import CompetitionRound     from '../api/competition-round/competition-round.model';
 import CompetitionMatch     from '../api/competition-match/competition-match.model';
 import Club                 from '../api/club/club.model';
-import Team                 from '../api/team/team.model';
 
 const playDayMap = {
   'zaterdag': 6,

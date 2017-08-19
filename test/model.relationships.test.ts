@@ -4,17 +4,18 @@ import { knex, bookshelf } from '../src/db';
 import logger from '../src/logger';
 
 import Club from '../src/api/club/club.model';
-import Team from '../src/api/team/team.model';
+import CompetitionTeam from '../src/api/competition-team/competition-team.model';
 import User from '../src/api/user/user.model';
 import Competition from '../src/api/competition/competition.model';
 
 const expect = chai.expect;
 
-describe('Team/Club relationship', () => {
-  it('Team belongs to a Club', () => {
-    return Team.where('id', 1).fetch({ withRelated: ['club'] }).then(team => {
+describe('CompetitionTeam/Club relationship', () => {
+  it('CompetitionTeam belongs to a Club', () => {
+    return CompetitionTeam.where('id', 1).fetch({ withRelated: ['club'] }).then(team => {
       expect(team.id).to.equal(1);
       expect(team.related('club').toJSON().city).to.equal('Amsterdam');
+      expect(team.related('club').toJSON().name).to.equal('SDZ');
     });
   });
 
@@ -30,7 +31,7 @@ describe('Team/Club relationship', () => {
   });
 
   it('Incorrect related query gives error', () => {
-    return Team.where('id', 1).fetch({ withRelated: ['clubs'] }).then(team => {
+    return CompetitionTeam.where('id', 1).fetch({ withRelated: ['clubs'] }).then(team => {
       expect('we should not').to.equal('end up here');
     })
     .catch(err => {
