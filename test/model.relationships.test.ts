@@ -1,10 +1,12 @@
 import * as mocha from 'mocha';
 import * as chai from 'chai';
 import { knex, bookshelf } from '../src/db';
+import logger from '../src/logger';
 
 import Club from '../src/api/club/club.model';
 import Team from '../src/api/team/team.model';
 import User from '../src/api/user/user.model';
+import Competition from '../src/api/competition/competition.model';
 
 const expect = chai.expect;
 
@@ -45,6 +47,26 @@ describe('User/Role relationship', () => {
       expect(roles).to.have.length(2);
       const roleNames = roles.map(role => role.name).sort();
       expect(roleNames).to.deep.equal(['admin', 'user']);
+    });
+  });
+});
+
+describe('Competition relationships', () => {
+  it('Competition has Teams, Rounds, Matches', () => {
+    return Competition.where('id', 2).fetch({ withRelated: ['teams', 'rounds', 'matches',  'competitionTemplate'] })
+    .then(competition => {
+      const teams = competition.related('teams').toJSON();
+      expect(teams).to.be.an('array');
+      expect(teams).to.have.length(14);
+      const rounds = competition.related('rounds').toJSON();
+      expect(rounds).to.be.an('array');
+      expect(rounds).to.have.length(4);
+      const matches = competition.related('matches').toJSON();
+      expect(matches).to.be.an('array');
+      expect(matches).to.have.length(7);
+      const competitionTemplate = competition.related('competitionTemplate').toJSON();
+      expect(competitionTemplate).to.be.an('object');
+      expect(competitionTemplate.name).to.equal('4E');
     });
   });
 });
