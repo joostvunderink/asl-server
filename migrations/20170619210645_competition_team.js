@@ -7,6 +7,7 @@ exports.up = function(knex) {
     table.integer('club_id').unsigned().references('id').inTable('club');
 
     // Current standings fields
+    table.integer('num_matches_played').unsigned().defaultTo(0);
     table.integer('num_matches_win').unsigned().defaultTo(0);
     table.integer('num_matches_loss').unsigned().defaultTo(0);
     table.integer('num_matches_draw').unsigned().defaultTo(0);

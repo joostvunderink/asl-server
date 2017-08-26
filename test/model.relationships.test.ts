@@ -64,7 +64,7 @@ describe('Competition relationships', () => {
       expect(rounds).to.have.length(4);
       const matches = competition.related('matches').toJSON();
       expect(matches).to.be.an('array');
-      expect(matches).to.have.length(7);
+      expect(matches).to.have.length(14);
       const competitionTemplate = competition.related('competitionTemplate').toJSON();
       expect(competitionTemplate).to.be.an('object');
       expect(competitionTemplate.name).to.equal('4E');
