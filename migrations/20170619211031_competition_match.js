@@ -10,6 +10,7 @@ exports.up = function(knex) {
     table.integer('away_team_score').unsigned;
     table.timestamp('start_time').nullable();
     table.timestamp('original_start_time').nullable();
+    table.enum('status', ['pending', 'active', 'completed']).defaultTo('pending');
 
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());

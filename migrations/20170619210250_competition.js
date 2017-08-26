@@ -5,6 +5,8 @@ exports.up = function(knex) {
     table.integer('competition_template_id').unsigned().references('id').inTable('competition_template');
     table.integer('season_id').unsigned().references('id').inTable('season');
 
+    table.enum('status', ['pending', 'active', 'completed']).defaultTo('pending');
+
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());

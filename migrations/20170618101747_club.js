@@ -2,6 +2,7 @@ exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('club', function (table) {
     table.increments();
     table.string('name');
+    table.string('type');
     table.string('description');
     table.string('park_name');
     table.string('address');
