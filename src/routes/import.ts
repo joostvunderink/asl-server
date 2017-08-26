@@ -15,9 +15,6 @@ async function routeImportCompetition(req, res, next) {
     });
   }
   catch(e) {
-    res.status(500).send({
-      errorCode: 'UnknownError',
-      errorMessage: e.message || e,
-    });
+    return next(e);
   }
 }

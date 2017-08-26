@@ -51,6 +51,18 @@ export class InvalidInputError extends AslError {
   }
 }
 
+export class DataIntegrityError extends AslError {
+  constructor(options) {
+    const { message, statusCode, data } = options;
+    super(options);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, ParseError.prototype);
+    this.statusCode = statusCode || 400;
+    this.data = data || {};
+  }
+}
+
 function getErrorMessage(err) {
   if (process.env.NODE_ENV === 'production') {
     return err;
@@ -63,9 +75,13 @@ function getErrorMessage(err) {
 export function handleError(err, req, res, next) {
   let errorMessage, errorCode;
 
+  // TODO: instead of using this hardcoded list, check if the error has the
+  // AslError prototype.
   const knownErrors = [
     PermissionDeniedError,
     ParseError,
+    InvalidInputError,
+    DataIntegrityError,
   ];
 
   for (let i = 0; i < knownErrors.length; i++) {

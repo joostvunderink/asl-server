@@ -3,6 +3,7 @@ import logger from '../logger';
 import * as moment from 'moment';
 import * as fs from 'fs';
 import * as request from 'request-promise';
+import { DataIntegrityError } from '../error';
 
 const clogger = logger.child({ section: 'import' });
 
@@ -118,8 +119,17 @@ async function createCompetitionTeam(args) {
                        .where('name', clubName)
                        .fetch();
   if (!club) {
-    throw new Error('Cannot import competition because club ' + clubName + ' does not exist for sport ' +
-      dbo.sport.name + ' in country ' + dbo.country.name);
+    throw new DataIntegrityError({
+      message: 'Cannot import competition because club ' + clubName + ' does not exist for sport ' +
+      dbo.sport.get('name') + ' in country ' + dbo.country.get('name'),
+      data: {
+        sport_name: dbo.sport.get('name'),
+        sport_id: dbo.sport.id,
+        country_name: dbo.country.get('name'),
+        country_id: dbo.country.id,
+        club_name: clubName,
+      },
+    });
   }
 
   let competitionTeam = new CompetitionTeam({
