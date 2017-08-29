@@ -1,9 +1,12 @@
 import * as mocha from 'mocha';
 import * as chai from 'chai';
+import * as sinon from 'sinon';
+
 import { knex, bookshelf } from '../src/db';
 import logger from '../src/logger';
 
 import Club from '../src/api/club/club.model';
+import CompetitionMatch from '../src/api/competition-match/competition-match.model';
 import CompetitionTeam from '../src/api/competition-team/competition-team.model';
 import Competition from '../src/api/competition/competition.model';
 import User from '../src/api/user/user.model';
@@ -59,5 +62,37 @@ describe('Competition calculate standings', () => {
     });
   });
 
+  it('Updating a competition match emits the right signal', (done) => {
+    const competitionMatchId = 1;
+
+    process.on('model.competition_match.updated', (args) => {
+      const { model } = args;
+      expect(model.id).to.equal(competitionMatchId);
+      done();
+    });
+
+    CompetitionMatch
+    .where('id', competitionMatchId)
+    .fetch()
+    .then(competitionMatch => {
+      return competitionMatch.set('home_team_score', 7).save();
+    });
+  });
+
+  it.skip('Competition match signal triggers the right event handler', (done) => {
+    done();
+    // Not sure yet how to test this. Want to use sinon to stub the event handler
+    // but that has been initiated on boot already and I'm not sure if it's possible
+    // to do this.
+
+    // const competitionId = 1;
+
+    // process.emit('model.competition_match.updated', {
+    //   model: {
+    //     competition_id: competitionId
+    //   }
+    // });
+
+  });
 
 });

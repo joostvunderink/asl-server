@@ -8,6 +8,7 @@ import { initOauth } from './oauth/routes';
 import { handleError } from './error';
 import logger from './logger';
 import { Router, AslRequest, Response, NextFunction } from './core/express.types';
+import { initEventHandlers } from './events';
 
 const oauthServer = require('oauth2-server');
 
@@ -29,6 +30,8 @@ app.use((req: AslRequest, res: Response, next: NextFunction) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+initEventHandlers();
 
 const os = oauthServer({
   model: require('./oauth/model'),

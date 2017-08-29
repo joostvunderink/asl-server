@@ -21,7 +21,6 @@ export class CompetitionController extends BaseController {
       const rounds = competition.related('rounds').toJSON();
       const matches = competition.related('matches').toJSON();
 
-      
       let teamsResults = {};
       teams.forEach(team => {
         teamsResults[team.id] = {
