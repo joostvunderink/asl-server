@@ -65,7 +65,7 @@ export function getUser(email, password, callback) {
     .then(function(user) {
       if (!user) {
         clogger.debug({ email }, 'User not found');
-        return callback('Email and/or password incorrect');
+        return callback();
       }
 
       const validPassword = bcrypt.compareSync(password, user.get('password'));
@@ -79,7 +79,7 @@ export function getUser(email, password, callback) {
       }
 
       clogger.debug({ email }, 'Invalid password');
-      return callback('Email and/or password incorrect');
+      return callback();
     });
 };
 
