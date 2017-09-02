@@ -8,7 +8,7 @@ exports.up = function(knex) {
     table.date('start_date');
     table.date('end_date');
 
-    table.integer('region_id').unsigned().references('id').inTable('region');
+    table.integer('region_id').unsigned().references('id').inTable('region').notNull();
     
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());

@@ -3,8 +3,8 @@ exports.up = function(knex) {
     table.increments();
 
     table.string('name');
-    table.integer('competition_id').unsigned().references('id').inTable('competition');
-    table.integer('club_id').unsigned().references('id').inTable('club');
+    table.integer('competition_id').unsigned().references('id').inTable('competition').notNull();
+    table.integer('club_id').unsigned().references('id').inTable('club').notNull();
 
     // Current standings fields
     table.integer('num_matches_played').unsigned().defaultTo(0);

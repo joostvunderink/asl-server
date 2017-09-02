@@ -2,8 +2,8 @@ exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('competition', function (table) {
     table.increments();
 
-    table.integer('competition_template_id').unsigned().references('id').inTable('competition_template');
-    table.integer('season_id').unsigned().references('id').inTable('season');
+    table.integer('competition_template_id').unsigned().references('id').inTable('competition_template').notNull();
+    table.integer('season_id').unsigned().references('id').inTable('season').notNull();
 
     table.enum('status', ['pending', 'active', 'completed']).defaultTo('pending');
 

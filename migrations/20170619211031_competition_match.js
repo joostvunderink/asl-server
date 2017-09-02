@@ -2,10 +2,10 @@ exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('competition_match', function (table) {
     table.increments();
 
-    table.integer('competition_id').unsigned().references('id').inTable('competition');
-    table.integer('competition_round_id').unsigned().references('id').inTable('competition_round');
-    table.integer('home_team_id').unsigned().references('id').inTable('competition_team');
-    table.integer('away_team_id').unsigned().references('id').inTable('competition_team');
+    table.integer('competition_id').unsigned().references('id').inTable('competition').notNull();
+    table.integer('competition_round_id').unsigned().references('id').inTable('competition_round').notNull();
+    table.integer('home_team_id').unsigned().references('id').inTable('competition_team').notNull();
+    table.integer('away_team_id').unsigned().references('id').inTable('competition_team').notNull();
     table.integer('home_team_score').unsigned;
     table.integer('away_team_score').unsigned;
     table.timestamp('start_time').nullable();

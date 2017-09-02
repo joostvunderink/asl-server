@@ -5,7 +5,7 @@ exports.up = function(knex) {
     table.string('description');
     table.integer('play_day'); // Sunday 0, Monday 1, ..., Saturday 6
 
-    table.integer('region_id').unsigned().references('id').inTable('region');
+    table.integer('region_id').unsigned().references('id').inTable('region').notNull();
     
     table.string('created_by');
     table.timestamp('created_at').defaultTo(knex.fn.now());
