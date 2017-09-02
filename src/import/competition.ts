@@ -297,7 +297,21 @@ export async function importCompetitionNlFootball(filename) {
     sport: await Sport.where('name', 'football').fetch(),
   };
 
-  clogger.debug({ region_name: info.competition.regionName }, 'Looking up region');
+  if (!dbo.country) {
+    logger.error('Could not find country "nl"');
+    throw new Error('oops');
+  }
+
+  if (!dbo.sport) {
+    logger.error('Could not find sport "football"');
+    throw new Error('oops');
+  }
+
+  clogger.debug({
+    region_name: info.competition.regionName,
+    sport_id: dbo.sport.id,
+    country_id: dbo.country.id,
+  }, 'Looking up region');
   dbo.region = await Region.where('country_id', dbo.country.id).where('sport_id', dbo.sport.id).where('name', info.competition.regionName).fetch();
   clogger.debug({ season_name: info.competition.season }, 'Looking up season');
   dbo.season = await Season.where('region_id', dbo.region.id).where('name', info.competition.season).fetch();
@@ -311,7 +325,6 @@ export async function importCompetitionNlFootball(filename) {
                                                      .where('name', info.competition.name)
                                                      .fetch();
 
-  clogger.debug()
   dbo.competition = await findOrCreateCompetition({ clogger, dbo });
   dbo.competitionTeams = await findOrCreateCompetitionTeams({ clogger, dbo, teamsData: info.teams });
   dbo.competitionRounds = await findOrCreateCompetitionRounds({ clogger, dbo, roundsData: info.rounds });
