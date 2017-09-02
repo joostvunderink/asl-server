@@ -298,13 +298,21 @@ export async function importCompetitionNlFootball(filename) {
   };
 
   if (!dbo.country) {
-    logger.error('Could not find country "nl"');
-    throw new Error('oops');
+    throw new DataIntegrityError({
+      message: 'Cannot import competition because country "nl" could not be found',
+      data: {
+        country_name: 'nl',
+      },
+    });
   }
 
   if (!dbo.sport) {
-    logger.error('Could not find sport "football"');
-    throw new Error('oops');
+    throw new DataIntegrityError({
+      message: 'Cannot import competition because sport "football" could not be found',
+      data: {
+        sport_name: 'football',
+      },
+    });
   }
 
   clogger.debug({
@@ -313,8 +321,39 @@ export async function importCompetitionNlFootball(filename) {
     country_id: dbo.country.id,
   }, 'Looking up region');
   dbo.region = await Region.where('country_id', dbo.country.id).where('sport_id', dbo.sport.id).where('name', info.competition.regionName).fetch();
+
+  if (!dbo.region) {
+    throw new DataIntegrityError({
+      message: 'Cannot import competition because region "' + info.competition.regionName + '" does not exist for sport ' +
+      dbo.sport.get('name') + ' in country ' + dbo.country.get('name'),
+      data: {
+        sport_name: dbo.sport.get('name'),
+        sport_id: dbo.sport.id,
+        country_name: dbo.country.get('name'),
+        country_id: dbo.country.id,
+        region_name: info.competition.regionName,
+      },
+    });
+  }
+
   clogger.debug({ season_name: info.competition.season }, 'Looking up season');
   dbo.season = await Season.where('region_id', dbo.region.id).where('name', info.competition.season).fetch();
+
+  if (!dbo.season) {
+    throw new DataIntegrityError({
+      message: 'Cannot import competition because season "' + info.competition.season + '" does not exist for region ' +
+      dbo.region.get('name') + ' in country ' + dbo.country.get('name'),
+      data: {
+        sport_name: dbo.sport.get('name'),
+        sport_id: dbo.sport.id,
+        country_name: dbo.country.get('name'),
+        country_id: dbo.country.id,
+        region_name: info.competition.regionName,
+        season_name: info.competition.season,
+      },
+    });
+  }
+
   clogger.debug({
     competition_name: info.competition.name,
     play_day_name: info.competition.playDay,
@@ -324,6 +363,23 @@ export async function importCompetitionNlFootball(filename) {
                                                      .where('play_day', playDayMap[info.competition.playDay])
                                                      .where('name', info.competition.name)
                                                      .fetch();
+
+  if (!dbo.competitionTemplate) {
+    throw new DataIntegrityError({
+      message: 'Cannot import competition because competition template for "' + info.competition.name + 
+        '" for playday ' + info.competition.playDay + ' does not exist for region ' +
+      dbo.region.get('name') + ' in country ' + dbo.country.get('name'),
+      data: {
+        sport_name: dbo.sport.get('name'),
+        sport_id: dbo.sport.id,
+        country_name: dbo.country.get('name'),
+        country_id: dbo.country.id,
+        region_name: info.competition.regionName,
+        competition_name: info.competition.name,
+        playday: playDayMap[info.competition.playDay]
+      },
+    });
+  }
 
   dbo.competition = await findOrCreateCompetition({ clogger, dbo });
   dbo.competitionTeams = await findOrCreateCompetitionTeams({ clogger, dbo, teamsData: info.teams });
