@@ -156,6 +156,7 @@ export default class BaseRouter {
     this.router.get('/count',  wrap('getCount'));
     this.router.get('/:id',    wrap('getOne'));
     this.router.put('/:id',    wrap('update'));
+    this.router.patch('/:id',  wrap('update'));
     this.router.delete('/:id', wrap('deleteOne'));
     this.router.get('/',       wrap('getAll'));
     this.router.post('/',      wrap('create'));
