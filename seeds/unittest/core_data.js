@@ -29,6 +29,7 @@ const data = [
         { id: 2, country_id: 1, sport_id: 1, name: 'West 2', description: 'South-West part of NL for football' },
         { id: 3, country_id: 1, sport_id: 2, name: 'East', description: 'East part of NL for basketball' },
         { id: 4, country_id: 2, sport_id: 1, name: 'NW', description: 'North-West part of BE for football' },
+        { id: 5, country_id: 3, sport_id: 1, name: 'NW', description: 'North-West part of SE for football' },
         { id: 4242, country_id: 2, sport_id: 2, name: 'Region for update tests', description: 'Some description' },
     ]
   },
