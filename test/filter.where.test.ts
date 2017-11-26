@@ -42,7 +42,7 @@ describe('Filter: where, operator: equals', () => {
         });
       });
   });
-  it.only('finds regions where country_id = 1 or country_id = 2', () => {
+  it('finds regions where country_id = 1 or country_id = 2', () => {
     return chapp.get('/api/v1/regions?filter={"where":{"or":[{"country_id":1},{"country_id":2}]}}')
       .then(res => {
         expect(res.status).to.equal(200);

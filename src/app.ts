@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as uuid from 'uuid';
+import * as cors from 'cors';
 import getRouteConfig from './routes/api';
 import { addImportRoutes } from './routes/import';
 import { initOauth } from './oauth/routes';
@@ -30,6 +31,28 @@ app.use((req: AslRequest, res: Response, next: NextFunction) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+var whitelist = [
+  'http://localhost:4200',
+  'http://localhost:4224',
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+    const whitelisted = whitelist.indexOf(origin) !== -1;
+    if (!whitelisted) {
+      logger.warn({
+        url: origin,
+      }, 'Request from non-whitelisted host');
+      return callback(new Error('Bad Request'), false);
+    }
+    callback(null, true);
+  },
+  credentials: true
+}));
 
 initEventHandlers();
 

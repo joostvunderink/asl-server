@@ -1,4 +1,5 @@
 import { aslModel } from '../../db';
+import logger from '../../logger';
 
 var Competition = aslModel('Competition', 'competition', {
   teams: function() {
@@ -12,7 +13,7 @@ var Competition = aslModel('Competition', 'competition', {
   },
   competitionTemplate: function() {
     return this.belongsTo('CompetitionTemplate');
-  }
+  },
 });
 
 export default Competition;
