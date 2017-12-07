@@ -76,6 +76,9 @@ export default class BaseRouter {
   public create(req: AslRequest, res: Response, next: NextFunction) {
     return can({ user: req.user, model: this.controller.model.tableName, operation: 'create' })
     .then(() => {
+      // The client is never allowed to set the id. If the client passes the "id" field,
+      // it is silently ignored.
+      delete req.body.id;
       return this.controller.create(req.body)
     })
     .then((createdEntity) => {
